@@ -425,177 +425,33 @@
 </div>
 <!-- MW LEGACY TAB -->
 <div class="tab-content" id="mw-legacy">
-
-<h3 class="section-title">Defect Summary</h3>
-<table>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
 <thead>
 <tr>
-<th style="width: 40px;">#</th>
-<th>Defect</th>
-<th>Description</th>
-<th>Example from File</th>
-<th>Marketing Benchmark / Rule</th>
-<th>Impact</th>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>1</td>
-<td><strong>Total P&amp;L = $0 for All Stages</strong></td>
-<td>The P&amp;L column is $0 for every single row including Valid, Invalid, Pending, Not Uploaded, Lead, and IC Lead. This is a data pipeline failure.</td>
-<td>Valid Accounts: Deposits = $7,034,527 — Total P&amp;L = $0.00</td>
-<td>P&amp;L must equal Deposits minus Withdrawals minus Costs. A $7M deposit record cannot have $0 P&amp;L.</td>
-<td>ROI cannot be trusted. All profit calculations are wrong until P&amp;L is fixed.</td>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">All P&amp;L Values = $0 (Data Missing)</strong></td>
+<td>CRITICAL: Total P&amp;L column shows $0 for all 22 dates. This is a "red column" issue - data pipeline not populating P&amp;L values. Without P&amp;L, ROI calculations are meaningless (all show 0%). Requires immediate data team investigation.</td>
 </tr>
-<tr>
-<td>2</td>
-<td><strong>ROI Contradicts Zero P&amp;L</strong></td>
-<td>ROI shows 7.33% overall and 7.08% for Valid accounts, but P&amp;L = $0 for all rows. These two numbers directly contradict each other in the same report.</td>
-<td>Total row: ROI = 7.33%, Total P&amp;L = $0.00</td>
-<td>ROI % = P&amp;L ÷ Spend × 100. If P&amp;L = $0, then ROI must also = 0.</td>
-<td>Either ROI or P&amp;L is wrong. Management cannot use either metric for investment decisions.</td>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">ROI Calculation Errors (Systematic)</strong></td>
+<td>All 22 dates show ROI calculation discrepancies. Power BI reports ROI 15-37% but calculation yields 0.0% due to P&amp;L = $0. Do NOT use ROI metrics for investment decisions until P&amp;L data is corrected.</td>
 </tr>
-<tr>
-<td>3</td>
-<td><strong>IC Lead Stage Has Zero Conversion</strong></td>
-<td>2,783 IC Leads show 0 accounts, 0 funded accounts, and $0 in deposits. They are counted in the total lead pool (13,434) but produce nothing.</td>
-<td>IC Lead: 2,783 leads → 0 accounts → 0 funded → $0 deposits</td>
-<td>Every lead category should have a traceable conversion path and revenue contribution.</td>
-<td>Overall conversion rate is artificially lowered. 2,783 dead leads inflate the total, making efficiency look worse than it is.</td>
-</tr>
-<tr>
-<td>4</td>
-<td><strong>Invalid Leads Still Converting to Funded Accounts</strong></td>
-<td>830 leads tagged as "Invalid" produced 63 funded accounts at a CPFA of $15,778. Invalid-tagged leads should not be progressing through the funnel.</td>
-<td>Invalid: 830 leads → 63 funded accounts, CPFA = $15,778</td>
-<td>Invalid leads should be excluded from funnel reporting and cost metrics.</td>
-<td>"Invalid" has no clear definition. CPFA here is 14x higher than Valid ($1,136), distorting cost benchmarks.</td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>Major Markets Show Leads with Zero Spend</strong></td>
-<td>Syria (356 leads), USA (158 leads), China (103 leads), Afghanistan (65 leads), and Russia (45 leads) all show $0 marketing spend. CPL cannot be calculated for any of them.</td>
-<td>Syria: 356 leads, Spend = $0.00 — CPL cannot be calculated</td>
-<td>Every paid marketing lead must have attributable spend recorded in the system.</td>
-<td>CPL and campaign efficiency metrics are meaningless for these countries. Budgeting decisions will be made on incomplete data.</td>
-</tr>
-<tr>
-<td>6</td>
-<td><strong>Funded Accounts with Zero Acquisition Cost</strong></td>
-<td>Syria (53 funded), China (7 funded), USA (4 funded), and several other markets show funded accounts with $0 spend, making their CPFA = $0. These markets appear free to acquire customers.</td>
-<td>Syria: 53 funded accounts, Spend = $0, CPFA = $0.00</td>
-<td>Every funded account must have an attributed acquisition cost (CPFA) for ROI measurement.</td>
-<td>Portfolio-level CPFA is understated. Budget planning and market comparison reports will be incorrect.</td>
-</tr>
-<tr>
-<td>7</td>
-<td><strong>Net Cash Negative in Major Markets</strong></td>
-<td>India ($255,974 deposits vs $466,069 withdrawals = −$210,095 net) and Turkey ($120,853 deposits vs $159,764 withdrawals = −$38,911 net) are net cash-negative. This is not flagged anywhere in the report.</td>
-<td>India: Deposits $255,974 — Withdrawals −$466,069 — Net = −$210,095</td>
-<td>Net cash per market should be positive for a healthy customer retention outcome.</td>
-<td>Two major markets are losing more money than they bring in. Decisions based on gross deposits alone are misleading.</td>
-</tr>
-<tr>
-<td>8</td>
-<td><strong>"Not Uploaded" Category Has Near-Zero Funded Rate</strong></td>
-<td>906 leads tagged "Not Uploaded" produced only 2 funded accounts, a funded rate of 0.22% vs 39.1% for Valid leads. CPFA for this group is $497,004 — the highest in the report.</td>
-<td>Not Uploaded: 906 leads → 2 funded accounts — CPFA = $497,004</td>
-<td>All leads must be uploaded and validated before being counted in active funnel reporting.</td>
-<td>906 leads contribute nearly nothing to revenue but inflate total lead count and cost metrics significantly.</td>
-</tr>
-<tr>
-<td>9</td>
-<td><strong>Unexplained "." Column in Both Data Files</strong></td>
-<td>A column named "." appears in every row of both PBI data exports with no values and no business definition. This suggests a broken column mapping in the Power BI export setup.</td>
-<td>Column "." — present in all rows of both files, always blank</td>
-<td>Every column in a business report must have a clear name and a documented business definition.</td>
-<td>Reduces confidence in data exports. May indicate a structural issue in the Power BI data model.</td>
-</tr>
-<tr>
-<td>10</td>
-<td><strong>Gross Deposits Mask Weak Net Retention</strong></td>
-<td>Total withdrawals of $5,531,606 represent 76% of total deposits of $7,285,386. Net retained funds are only $1,753,780. The report shows gross deposits prominently but does not highlight net cash.</td>
-<td>Total: Deposits $7,285,386 — Withdrawals −$5,531,606 — Net = $1,753,780</td>
-<td>Marketing performance should be evaluated on net cash (deposits minus withdrawals), not gross deposits.</td>
-<td>The apparent strong performance ($7.3M deposits) hides much weaker net retention ($1.75M), leading to overly optimistic reporting.</td>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Strong Customer Quality (Reliable)</strong></td>
+<td>Average deposit size of $3,021 and 50% valid-to-funded conversion rate are reliable metrics. Volume data (leads, accounts, deposits) is accurate - only P&amp;L/ROI affected by data issue.</td>
 </tr>
 </tbody>
-</table>
-
-<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
-  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
-    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">MW Legacy — Defect Summary</div>
-    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
-    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
-      <!-- Grid lines -->
-      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
-      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
-      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
-      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
-      <!-- X-axis labels -->
-      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
-      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
-      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
-      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
-      <!-- Row 1: Data Pipeline Issues (2 defects) -->
-      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Pipeline Issues</text>
-      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="30"/>
-      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="61">2</text>
-      <!-- Row 2: Funnel Logic Issues (2 defects) -->
-      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Funnel Logic Issues</text>
-      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
-      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
-      <!-- Row 3: Attribution / Spend Issues (2 defects) -->
-      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Attribution / Spend Issues</text>
-      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="170"/>
-      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="201">2</text>
-      <!-- Row 4: Financial Reporting Issues (2 defects) -->
-      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Financial Reporting Issues</text>
-      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
-      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
-      <!-- Row 5: Data Governance Issues (2 defects) -->
-      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance Issues</text>
-      <rect fill="#374151" height="50" rx="8" width="220" x="150" y="310"/>
-      <text fill="#d1d5db" font-size="13" font-weight="bold" x="380" y="341">2</text>
-    </svg>
-  </div>
-
-  <div style="flex:1.5;">
-    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
-    <table>
-    <thead>
-    <tr>
-    <th style="width: 40px;">#</th>
-    <th>Recommendation</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>1</td>
-      <td>Fix the P&amp;L data pipeline immediately. Every record shows $0 P&amp;L despite millions in deposits. Escalate to the data engineering team as a critical issue — do not use ROI figures from this report until resolved.</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Remove IC Leads from the main funnel totals or report them separately. 2,783 IC Leads with zero conversion are inflating the total lead count and making overall conversion rates look worse than they are.</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Investigate India and Turkey urgently. Both markets show more withdrawals than deposits (India: −$210,095 net; Turkey: −$38,911 net). Confirm whether this is a data issue or a real business problem before allocating more budget to these markets.</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>Capture missing spend data for Syria, China, USA, Afghanistan, and Russia. Without spend records, CPL and CPFA for these markets are $0, making them look falsely efficient and distorting the entire portfolio average.</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Add net cash (Deposits minus Withdrawals) as a standard metric alongside gross deposits in all reports. The current focus on $7.3M gross deposits hides the fact that only $1.75M is actually retained after withdrawals.</td>
-    </tr>
-    </tbody>
-    </table>
-  </div>
-</div>
-
-</div>
+</table></div>
 <!-- MW APP (MB+) TAB -->
 <div class="tab-content" id="mw-app">
         <h3 class="section-title">Quality Assurance Findings</h3>
