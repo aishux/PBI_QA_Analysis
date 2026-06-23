@@ -367,11 +367,11 @@
 </tr>
 <tr>
 <td>10</td>
-<td><strong>Country-Level Funnel Distortion</strong></td>
-<td>Leads, Accounts and Funded Accounts aggregated by country.</td>
-<td>Multiple countries</td>
-<td>Funnel metrics should normally be analyzed by campaign/source.</td>
-<td>Conversion rates may be misleading and lead to wrong decisions.</td>
+<td><strong>Duplicate Country Entries with Different Name Spellings</strong></td>
+<td>The same country appears multiple times under different spellings, splitting its data across rows. Côte d'Ivoire appears as three separate rows ("Cote DIvoire", "Cote d'Ivoire", "Côte d'Ivoire"). United States appears as both "United States" and "United States of America". Macedonia appears as both "Macedonia" and "North Macedonia". Macao appears as "Macao" and "Macao S.A.R."</td>
+<td>Côte d'Ivoire: 3 rows — only "Cote DIvoire" has data (27 leads, 2 funded, $250 deposits); the other two show zero. "United States" row: 0 leads, $0. "United States of America" row: 163 leads, $4,650 deposits.</td>
+<td>Each country must appear exactly once with a single consistent name. Duplicate rows cause double-counting risk and incomplete country-level rankings.</td>
+<td>Any report sorted or filtered by country will show fragmented data. Total counts appear correct only because the duplicate rows are mostly empty — but a single misattributed entry would cause silent double-counting.</td>
 </tr>
 </tbody>
 </table>
@@ -425,236 +425,1380 @@
 </div>
 <!-- MW LEGACY TAB -->
 <div class="tab-content" id="mw-legacy">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #fee2e2;">
-<td style="text-align: center; font-size: 20px;">🔴</td>
-<td><strong style="color: #991b1b;">All P&amp;L Values = $0 (Data Missing)</strong></td>
-<td>CRITICAL: Total P&amp;L column shows $0 for all 22 dates. This is a "red column" issue - data pipeline not populating P&amp;L values. Without P&amp;L, ROI calculations are meaningless (all show 0%). Requires immediate data team investigation.</td>
+<tr>
+<td>1</td>
+<td><strong>Total P&amp;L = $0 for All Stages</strong></td>
+<td>The P&amp;L column is $0 for every single row including Valid, Invalid, Pending, Not Uploaded, Lead, and IC Lead. This is a data pipeline failure.</td>
+<td>Valid Accounts: Deposits = $7,034,527 — Total P&amp;L = $0.00</td>
+<td>P&amp;L must equal Deposits minus Withdrawals minus Costs. A $7M deposit record cannot have $0 P&amp;L.</td>
+<td>ROI cannot be trusted. All profit calculations are wrong until P&amp;L is fixed.</td>
 </tr>
-<tr style="background: #fee2e2;">
-<td style="text-align: center; font-size: 20px;">🔴</td>
-<td><strong style="color: #991b1b;">ROI Calculation Errors (Systematic)</strong></td>
-<td>All 22 dates show ROI calculation discrepancies. Power BI reports ROI 15-37% but calculation yields 0.0% due to P&amp;L = $0. Do NOT use ROI metrics for investment decisions until P&amp;L data is corrected.</td>
+<tr>
+<td>2</td>
+<td><strong>ROI Contradicts Zero P&amp;L</strong></td>
+<td>ROI shows 7.33% overall and 7.08% for Valid accounts, but P&amp;L = $0 for all rows. These two numbers directly contradict each other in the same report.</td>
+<td>Total row: ROI = 7.33%, Total P&amp;L = $0.00</td>
+<td>ROI % = P&amp;L ÷ Spend × 100. If P&amp;L = $0, then ROI must also = 0.</td>
+<td>Either ROI or P&amp;L is wrong. Management cannot use either metric for investment decisions.</td>
 </tr>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Strong Customer Quality (Reliable)</strong></td>
-<td>Average deposit size of $3,021 and 50% valid-to-funded conversion rate are reliable metrics. Volume data (leads, accounts, deposits) is accurate - only P&amp;L/ROI affected by data issue.</td>
+<tr>
+<td>3</td>
+<td><strong>IC Lead Stage Has Zero Conversion</strong></td>
+<td>2,783 IC Leads show 0 accounts, 0 funded accounts, and $0 in deposits. They are counted in the total lead pool (13,434) but produce nothing.</td>
+<td>IC Lead: 2,783 leads → 0 accounts → 0 funded → $0 deposits</td>
+<td>Every lead category should have a traceable conversion path and revenue contribution.</td>
+<td>Overall conversion rate is artificially lowered. 2,783 dead leads inflate the total, making efficiency look worse than it is.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Invalid Leads Still Converting to Funded Accounts</strong></td>
+<td>830 leads tagged as "Invalid" produced 63 funded accounts at a CPFA of $15,778. Invalid-tagged leads should not be progressing through the funnel.</td>
+<td>Invalid: 830 leads → 63 funded accounts, CPFA = $15,778</td>
+<td>Invalid leads should be excluded from funnel reporting and cost metrics.</td>
+<td>"Invalid" has no clear definition. CPFA here is 14x higher than Valid ($1,136), distorting cost benchmarks.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Major Markets Show Leads with Zero Spend</strong></td>
+<td>Syria (356 leads), USA (158 leads), China (103 leads), Afghanistan (65 leads), and Russia (45 leads) all show $0 marketing spend. CPL cannot be calculated for any of them.</td>
+<td>Syria: 356 leads, Spend = $0.00 — CPL cannot be calculated</td>
+<td>Every paid marketing lead must have attributable spend recorded in the system.</td>
+<td>CPL and campaign efficiency metrics are meaningless for these countries. Budgeting decisions will be made on incomplete data.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Funded Accounts with Zero Acquisition Cost</strong></td>
+<td>Syria (53 funded), China (7 funded), USA (4 funded), and several other markets show funded accounts with $0 spend, making their CPFA = $0. These markets appear free to acquire customers.</td>
+<td>Syria: 53 funded accounts, Spend = $0, CPFA = $0.00</td>
+<td>Every funded account must have an attributed acquisition cost (CPFA) for ROI measurement.</td>
+<td>Portfolio-level CPFA is understated. Budget planning and market comparison reports will be incorrect.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Net Cash Negative in Major Markets</strong></td>
+<td>India ($255,974 deposits vs $466,069 withdrawals = −$210,095 net) and Turkey ($120,853 deposits vs $159,764 withdrawals = −$38,911 net) are net cash-negative. This is not flagged anywhere in the report.</td>
+<td>India: Deposits $255,974 — Withdrawals −$466,069 — Net = −$210,095</td>
+<td>Net cash per market should be positive for a healthy customer retention outcome.</td>
+<td>Two major markets are losing more money than they bring in. Decisions based on gross deposits alone are misleading.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>"Not Uploaded" Category Has Near-Zero Funded Rate</strong></td>
+<td>906 leads tagged "Not Uploaded" produced only 2 funded accounts, a funded rate of 0.22% vs 39.1% for Valid leads. CPFA for this group is $497,004 — the highest in the report.</td>
+<td>Not Uploaded: 906 leads → 2 funded accounts — CPFA = $497,004</td>
+<td>All leads must be uploaded and validated before being counted in active funnel reporting.</td>
+<td>906 leads contribute nearly nothing to revenue but inflate total lead count and cost metrics significantly.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Unexplained "." Column in Both Data Files</strong></td>
+<td>A column named "." appears in every row of both PBI data exports with no values and no business definition. This suggests a broken column mapping in the Power BI export setup.</td>
+<td>Column "." — present in all rows of both files, always blank</td>
+<td>Every column in a business report must have a clear name and a documented business definition.</td>
+<td>Reduces confidence in data exports. May indicate a structural issue in the Power BI data model.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Gross Deposits Mask Weak Net Retention</strong></td>
+<td>Total withdrawals of $5,531,606 represent 76% of total deposits of $7,285,386. Net retained funds are only $1,753,780. The report shows gross deposits prominently but does not highlight net cash.</td>
+<td>Total: Deposits $7,285,386 — Withdrawals −$5,531,606 — Net = $1,753,780</td>
+<td>Marketing performance should be evaluated on net cash (deposits minus withdrawals), not gross deposits.</td>
+<td>The apparent strong performance ($7.3M deposits) hides much weaker net retention ($1.75M), leading to overly optimistic reporting.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">MW Legacy — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Data Pipeline Issues (2 defects) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="61">2</text>
+      <!-- Row 2: Funnel Logic Issues (2 defects) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Funnel Logic Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Attribution / Spend Issues (2 defects) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Attribution / Spend Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Financial Reporting Issues (2 defects) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Financial Reporting Issues</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Governance Issues (2 defects) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance Issues</text>
+      <rect fill="#374151" height="50" rx="8" width="220" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="380" y="341">2</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fix the P&amp;L data pipeline immediately. Every record shows $0 P&amp;L despite millions in deposits. Escalate to the data engineering team as a critical issue — do not use ROI figures from this report until resolved.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Remove IC Leads from the main funnel totals or report them separately. 2,783 IC Leads with zero conversion are inflating the total lead count and making overall conversion rates look worse than they are.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Investigate India and Turkey urgently. Both markets show more withdrawals than deposits (India: −$210,095 net; Turkey: −$38,911 net). Confirm whether this is a data issue or a real business problem before allocating more budget to these markets.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Capture missing spend data for Syria, China, USA, Afghanistan, and Russia. Without spend records, CPL and CPFA for these markets are $0, making them look falsely efficient and distorting the entire portfolio average.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Add net cash (Deposits minus Withdrawals) as a standard metric alongside gross deposits in all reports. The current focus on $7.3M gross deposits hides the fact that only $1.75M is actually retained after withdrawals.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- MW APP (MB+) TAB -->
 <div class="tab-content" id="mw-app">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #fee2e2;">
-<td style="text-align: center; font-size: 20px;">🔴</td>
-<td><strong style="color: #991b1b;">Funnel Logic Violations (Country-Level)</strong></td>
-<td>CRITICAL: 118 of 197 countries (60%) show impossible conversion rates where Accounts &gt; Leads or Funded &gt; Accounts. This indicates data aggregation or timing issues at country dimension. Stage-level data is clean (100/100).</td>
+<tr>
+<td>1</td>
+<td><strong>Total Spend = $0 for Every Country</strong></td>
+<td>The "Spent $" column is $0 for all 222 countries and the Total row. This means CPL, CPA, CPFA, CPI, and CPC are all $0 across the entire dataset — making every cost metric in this report completely unusable.</td>
+<td>Total row: Spent = $0.00 — CPL = $0.00 — CPA = $0.00 — CPFA = $0.00</td>
+<td>All paid campaigns must record spend. Without spend, no cost-per metric can be calculated.</td>
+<td>Zero budget visibility. Cannot evaluate efficiency, justify spend, or compare this report to any benchmark.</td>
 </tr>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Stage-Level Data Clean</strong></td>
-<td>Valid/Invalid/Pending stage breakdown has perfect data quality. Use stage-level metrics (not country-level) for conversion rate analysis.</td>
+<tr>
+<td>2</td>
+<td><strong>Total P&amp;L = $0 Despite $5.98M in Deposits</strong></td>
+<td>P&amp;L = $0 for every single row. The same data pipeline failure seen in MW Legacy is present here. The business generated $5.98M in deposits and $2.52M in withdrawals, yet P&amp;L shows $0.</td>
+<td>Total: Deposits $5,982,114 — Withdrawals −$2,524,806 — P&amp;L = $0.00</td>
+<td>P&amp;L must reflect actual profit. With $5.98M in deposits, a $0 P&amp;L is impossible.</td>
+<td>ROI = 0% everywhere. Profitability cannot be assessed for any market or the overall programme.</td>
 </tr>
-<tr style="background: #dbeafe;">
-<td style="text-align: center; font-size: 20px;">ℹ️</td>
-<td><strong style="color: #1e3a8a;">UAE Performance Validated</strong></td>
-<td>UAE deposit totals and rankings are correct. Geographic concentration at 52% is accurate. Use for strategic geography decisions.</td>
+<tr>
+<td>3</td>
+<td><strong>Clicks Exceed Impressions in 186 Countries (Impossible)</strong></td>
+<td>At total level, Clicks = 27,892 but Impressions = 2,881. Clicks are nearly 10× more than impressions. An ad cannot be clicked without first being shown. This is broken ad platform tracking.</td>
+<td>Canada: Impressions = 1, Clicks = 5,397. Total: Impressions 2,881 vs Clicks 27,892.</td>
+<td>Clicks must always be ≤ Impressions. CTR over 100% is mathematically impossible.</td>
+<td>CTR, impression share, and ad reach data are unreliable for all 186 affected countries.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>506,096 Sessions Are Untracked — 55% of All Traffic</strong></td>
+<td>A row labelled "Untracked" holds 506,096 sessions — more than half of all 911,857 total sessions — with $0 deposits, 0 leads, and no country attribution whatsoever.</td>
+<td>Untracked: Sessions = 506,096 — Leads = 0 — Deposits = $0.00</td>
+<td>All app sessions must be attributed to a country for geographic performance analysis to be valid.</td>
+<td>Country-level analysis is based on only 45% of actual traffic. Strategic decisions will be made on incomplete data.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Leads Exceed App Installs in 44 Countries (Impossible)</strong></td>
+<td>In 44 countries, the number of leads is greater than the number of app installs. In an app-based funnel, you cannot generate leads from users who have not installed the app.</td>
+<td>Haiti: 4 installs → 24 leads (6×). Yemen: 208 installs → 820 leads (3.9×).</td>
+<td>Installs to Leads % must be ≤ 100%. Leads cannot exceed total app installs.</td>
+<td>Funnel sequence is broken. Either installs are being undercounted or leads are being miscategorized at source.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>USA: High Traffic, Zero Leads and Zero Deposits</strong></td>
+<td>The United States has 1,219 clicks, 21,045 sessions, and 605 app downloads — making it a top-traffic market — yet it shows 0 leads and $0 in deposits. Not flagged anywhere in the report.</td>
+<td>USA: Clicks 1,219 — Sessions 21,045 — Downloads 605 — Leads 0 — Deposits $0.00</td>
+<td>Any market with significant traffic investment should show measurable lead and deposit activity.</td>
+<td>USA appears to be a complete budget drain. Significant traffic is generating zero business value with no alert.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>CPI = $0 for 190 Countries Despite 33,295 Downloads</strong></td>
+<td>CPI (Cost Per Install) = $0 for every country because Spend = $0. The app has 33,295 downloads across 190+ countries with no cost of acquisition tracked for any of them.</td>
+<td>Canada: 5,099 downloads, CPI = $0.00. UAE: 2,629 downloads, CPI = $0.00.</td>
+<td>CPI = Spend ÷ Installs. Without spend data, app install efficiency cannot be measured.</td>
+<td>Cannot identify which markets deliver the best or worst app install efficiency. App marketing budget is unaccountable.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Net Cash Negative in Multiple Markets</strong></td>
+<td>Nine countries show more withdrawals than deposits: Bangladesh (−$39,550 net), Poland (−$10,250 net), Brazil (−$6,195 net), Mexico (−$1,222 net), and others. None of this is flagged in the report.</td>
+<td>Bangladesh: Deposits $5,566 — Withdrawals −$45,116 — Net = −$39,550</td>
+<td>Net cash per market (Deposits minus Withdrawals) should be positive for healthy retention.</td>
+<td>These markets are net cash-negative. Marketing investment in them is producing net losses, not returns.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>CPTA = $0 for All Countries Despite 1,830 Traded Accounts</strong></td>
+<td>CPTA (Cost Per Traded Account) = $0 everywhere because Spend = $0. The report shows 1,830 traded accounts — 88.9% of 2,058 funded accounts — yet the cost to acquire each active trader cannot be measured.</td>
+<td>Total: 1,830 Traded Accounts — CPTA = $0.00</td>
+<td>CPTA = Spend ÷ Traded Accounts. This is a critical efficiency metric for any trading platform.</td>
+<td>Cannot assess cost to acquire an active trader — the most commercially valuable user type in this funnel.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Unexplained "." Column — Same Governance Defect as MW Legacy</strong></td>
+<td>The unnamed "." column appears in every row of this data file, always blank, with no business definition. This is the same structural defect found in the MW Legacy export, confirming it is a systemic Power BI configuration problem.</td>
+<td>Column "." — present in all 225 rows, always blank/NaN</td>
+<td>Every column in a business report must have a clear name and a documented business definition.</td>
+<td>Confirms a systemic Power BI export misconfiguration affecting multiple reports. Reduces confidence in all exports from this dashboard.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">MW APP (MB+) — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Data Pipeline Issues (3 defects: Spend=$0, P&L=$0, CPTA=$0) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <!-- Row 2: Ad Tracking Issues (2 defects: Impressions<Clicks, CPI=$0) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Ad Tracking Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Funnel Logic Issues (2 defects: Leads>Installs, USA zero) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Funnel Logic Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Attribution & Financial (2 defects: Untracked sessions, Net cash negative) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Attribution &amp; Financial</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Governance (1 defect: "." column) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fix the spend data pipeline as the highest priority. Every single cost metric — CPL, CPA, CPFA, CPI, CPTA, CPC — is $0 because no spend is recorded. This report cannot be used for any budget or efficiency decision until spend data flows correctly.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Fix the ad impression tracking immediately. Total clicks (27,892) are nearly 10× total impressions (2,881), which is mathematically impossible. The ad platform tracking is misconfigured for 186 countries. CTR and reach metrics are all wrong.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Resolve the Untracked sessions problem. 506,096 sessions — 55% of all app traffic — have no country attribution. Implement proper UTM tagging or SDK-level geo-attribution to ensure all sessions are mapped to a market.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Investigate the USA immediately. It is a high-traffic, high-download market (21,045 sessions, 605 installs) with zero leads and zero deposits. Determine whether this is a tracking failure or a genuine conversion problem before spending more on US acquisition.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Flag and review the 9 markets with negative net cash (Bangladesh, Poland, Brazil, Mexico, Thailand, and others). These markets are generating more withdrawals than deposits and represent a net financial drain, not a return on marketing investment.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- MB+ PERIOD OVERVIEW TAB -->
 <div class="tab-content" id="mb-plus">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Clean User-Level Data</strong></td>
-<td>256 user records with complete deposit and platform tracking. No negative values or critical data quality issues detected. This dataset provides granular insights into customer acquisition sources.</td>
+<tr>
+<td>1</td>
+<td><strong>ROI = 0% and Spent = $0 Across All Months</strong></td>
+<td>The dashboard shows ROI % = 0.0% and Spent $ = $0 for every month from January to June 2026. The same broken spend pipeline found in MW Legacy and MW APP is present here too, making all cost metrics (CPI, CPL, CPA, CPFA, CPTA) equal to $0.</td>
+<td>Dashboard: ROI % = 0.0% — Spent $ = $0 — Deposits = $4,073,171</td>
+<td>ROI must reflect actual spend and profit. A $4M deposit programme recording $0 spend is a data pipeline failure.</td>
+<td>Cannot measure the true cost or return of this campaign. All six cost-per metrics are completely unreliable.</td>
 </tr>
-<tr style="background: #dbeafe;">
-<td style="text-align: center; font-size: 20px;">ℹ️</td>
-<td><strong style="color: #1e3a8a;">Marketing Platform Data Available</strong></td>
-<td>This report includes Marketing Platform dimension (Organic, Direct &amp; Others, Direct Buys, Google Search, etc.) which was missing from other campaigns. Enables channel performance analysis.</td>
+<tr>
+<td>2</td>
+<td><strong>87.1% of Users Have No Campaign Attribution</strong></td>
+<td>952 out of 1,093 users (87.1%) have a blank Campaign field. These users account for $3,875,444 in deposits — 95.2% of total deposits — which cannot be linked to any specific marketing campaign.</td>
+<td>952 users — $3,875,444 in deposits — Campaign = blank</td>
+<td>All marketing-sourced users must have a campaign ID to enable campaign-level ROI measurement.</td>
+<td>95% of deposit value is unattributable to any campaign. Marketing team cannot justify or optimize spend.</td>
 </tr>
-<tr style="background: #fef3c7;">
-<td style="text-align: center; font-size: 20px;">⚠️</td>
-<td><strong style="color: #78350f;">Minor Missing Values</strong></td>
-<td>Small number of missing values in Country, Account Type fields. Does not impact overall analysis but should be addressed in source system data entry.</td>
+<tr>
+<td>3</td>
+<td><strong>13 Users Traded Before Making a Deposit (Impossible)</strong></td>
+<td>13 users have a First Trade Date that is earlier than their First Deposit Date. On a trading platform, you cannot execute a trade without first depositing funds. These are system timestamp errors.</td>
+<td>Muhammad Amin (UAE): Trade Date 2026-01-26 — Deposit Date 2026-01-27 — Deposits $75,026</td>
+<td>First Trade Date must always be on or after First Deposit Date. Trading before depositing is not operationally possible.</td>
+<td>Customer journey timelines are wrong for these 13 records. Conversion time analysis and sales reporting are distorted.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>17 Users Made a Deposit Before Their Account Was Created (Impossible)</strong></td>
+<td>17 users show a First Deposit Date that is earlier than their First Account Creation Date. A deposit cannot be received into an account that does not yet exist in the system.</td>
+<td>Kelvin Chen (Australia): Account created 2026-01-13 — First Deposit 2026-01-12 — $1,200</td>
+<td>First Deposit Date must always be on or after First Account Creation Date.</td>
+<td>CRM timestamp integrity is broken across multiple markets. The entire customer journey sequence cannot be trusted for these users.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>82 Demo Accounts Show Real Deposit Amounts</strong></td>
+<td>82 users are classified as "Demo" account type yet have real deposit values recorded — ranging from $11.73 to $950.00. Demo accounts use virtual funds only and should never carry real deposit amounts.</td>
+<td>MOHD ARSHAD (India): Account Type = Demo — Deposits = $57.86 — First Trade Date = 2026-03-12</td>
+<td>Demo accounts must have $0 real deposits. Any user with real funds must be classified as a Live account.</td>
+<td>Demo and Live account segmentation is unreliable. Active trader and funded account counts may be inflated by miscategorized demo users.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>"Direct &amp; Others" Is the Largest Platform — Too Vague to Act On</strong></td>
+<td>"Direct &amp; Others" accounts for 560 users (51.2%) and $2,272,339 in deposits (55.8% of total) — making it the single biggest marketing platform. However, it is a catch-all category with no specific channel breakdown.</td>
+<td>Direct &amp; Others: 560 users — $2,272,339 deposits — 51.2% of all users</td>
+<td>Marketing platforms must be specific (Google, Facebook, Affiliate, etc.) to enable channel-level ROI comparison.</td>
+<td>Over half of all deposits cannot be attributed to a measurable channel. Budget optimisation decisions are impossible for this segment.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>31 Users Took More Than 60 Days to Make Their First Deposit</strong></td>
+<td>31 users registered in earlier months but only deposited 60 to 139 days later. The longest lag is 139 days (May Ann Reyes: registered January 2026, deposited May 2026). These late depositors are counted in the month they deposit, not when they registered.</td>
+<td>May Ann Reyes: Registered 2026-01-11 — First Deposit 2026-05-30 — Lag = 139 days</td>
+<td>Acquisition month and deposit month should be clearly separated or flagged when the gap exceeds 30 days.</td>
+<td>Monthly deposit totals are being inflated by users acquired in prior months. Cohort-based reporting will be inaccurate.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>7 Duplicate Client Names Found Across Multiple Records</strong></td>
+<td>Three client names appear more than once across different records with different deposit amounts and sometimes different countries: "manpreet singh" (3 records), "Mobashir Ahmed" (2), and "Amanpreet kaur" (2). These may be the same person registered multiple times.</td>
+<td>manpreet singh: 3 records — Australia ($1,730), Australia ($1,050), India ($73.99)</td>
+<td>Each real client must have a single unique record. Duplicate registrations indicate a CRM deduplication failure.</td>
+<td>Client count and deposit totals may be overstated if the same person is counted more than once.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>3 User Records Are Missing Core Identifying Fields</strong></td>
+<td>3 rows in the user dataset are missing Client Name, Account Type, Country, Sales Desk, Marketing Platform, and all date fields simultaneously. These are not metadata rows — they are positioned within the user data section.</td>
+<td>3 rows: Client Name = blank — Country = blank — All dates = missing</td>
+<td>Every user record must have a client identifier, country, and account type as mandatory fields.</td>
+<td>These ghost records may be included in aggregated counts, silently distorting user and deposit totals.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Campaign Naming Has No Consistent Standard</strong></td>
+<td>The 141 users who do have campaign names use at least 10 different naming formats with no shared schema: "MBFX_GLOBAL_IC_DIRECT-BUYS_SEP-25", "LEGACY_NA_CA_EN_IC_GOOGLE_SEARCH_WEB_PRO_BRAND_DEC-25", "LINK-SHARED-IN-CHAT", "SOCIAL_POST", "DIRECTBUYS", "MULTIBANK". Each name is structured differently.</td>
+<td>Campaign values: "MBFX_GLOBAL..." vs "LEGACY_NA_CA..." vs "LINK-SHARED-IN-CHAT" vs "MULTIBANK"</td>
+<td>Campaign names must follow a single consistent schema (e.g., BRAND_REGION_COUNTRY_TYPE_CHANNEL_DATE) for automated filtering and reporting.</td>
+<td>Cannot group, aggregate, or filter campaigns programmatically. Every analysis requires manual interpretation of each name.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">MB+ Period Overview — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Data Governance (3 defects: duplicates, missing fields, naming) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <!-- Row 2: Attribution Gaps (2 defects: no campaign, Direct&Others vague) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Attribution Gaps</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Date Logic Violations (2 defects: trade before deposit, deposit before account) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Date Logic Violations</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Account Data Issues (2 defects: demo with deposits, long lag users) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Account Data Issues</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Pipeline (1 defect: ROI=0, Spend=$0) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fix campaign attribution as the top priority. 952 users and $3,875,444 in deposits (95%) are unattributed to any campaign. Enforce mandatory campaign tagging at registration so every user can be linked to the marketing activity that brought them in.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Fix the timestamp errors for the 13 users with trade-before-deposit and 17 users with deposit-before-account-creation. Investigate whether these are timezone issues, system clock mismatches, or CRM entry errors, and correct the records before using them in any retention or conversion analysis.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Review and reclassify the 82 Demo accounts that carry real deposit amounts. Determine whether they should be re-tagged as Live accounts or whether the deposits are an error. Demo account reporting must be fully separated from Live account metrics.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Break down the "Direct &amp; Others" platform category into specific sub-channels (e.g., email, referral, affiliate, internal link). 51.2% of users and 55.8% of deposits sitting in a catch-all bucket makes channel ROI comparison impossible.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Introduce a single campaign naming convention across all teams — for example: BRAND_REGION_COUNTRY_CHANNEL_TYPE_YYYYMM — and enforce it in the CRM at campaign creation. Without a standard, the Campaign field cannot be used for any systematic filtering or automated reporting.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- IB - MW LEGACY TAB -->
 <div class="tab-content" id="ib-mw-legacy">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #fee2e2;">
-<td style="text-align: center; font-size: 20px;">🔴</td>
-<td><strong style="color: #991b1b;">ROI Calculation Error Detected</strong></td>
-<td>ROI shows 24.25% in Power BI but calculation yields 0.00% based on P&amp;L ($0) / Spent ($6,966). Same systematic error as MW Legacy campaign - requires validation.</td>
+<tr>
+<td>1</td>
+<td><strong>P&amp;L = $0 Yet ROI Shows 50.05% — Direct Contradiction</strong></td>
+<td>Every one of the 81 campaign rows shows Total PL = $0. Yet the Total row reports ROI = 50.05%. If P&amp;L is zero, ROI must be zero. This is the same broken pipeline found across all other tabs.</td>
+<td>Total row: Deposits $3,182,644 — P&amp;L = $0.00 — ROI = 50.05%</td>
+<td>ROI = P&amp;L ÷ Spend × 100. A $0 P&amp;L cannot produce a 50% ROI. One of these two figures is always wrong.</td>
+<td>The headline ROI figure of 50% is not supported by the underlying data. Any IB investment decision based on this is unreliable.</td>
 </tr>
-<tr style="background: #fef3c7;">
-<td style="text-align: center; font-size: 20px;">⚠️</td>
-<td><strong style="color: #78350f;">Turkey Dominates Deposits</strong></td>
-<td>Turkey represents 83% of total deposits ($163,768) from only 6 leads. This exceptional concentration warrants verification - could indicate high-value IB partners or data anomaly.</td>
+<tr>
+<td>2</td>
+<td><strong>37 IC Campaigns Mixed Into an IB-Only Report</strong></td>
+<td>37 out of 81 campaigns contain "_IC_" in their name — meaning they target Individual Clients, not Introducing Brokers. They are appearing inside a report filtered specifically for IB activity.</td>
+<td>LEGACY_APAC_AU_EN_IC_GOOGLE_SEARCH_WEB_PRO_BRAND_DEC-25: in IB report — 3 leads, 1 signed, 0 funded IBs</td>
+<td>IB reports must only include campaigns tagged for IB recruitment. IC campaigns use a completely different funnel and KPIs.</td>
+<td>IB funnel conversion rates (Leads to Signed, Signed to Funded IB) are being contaminated by IC traffic, making them untrustworthy.</td>
 </tr>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Deposits Exceed Spend</strong></td>
-<td>Total deposits of $197,081 vs spend of $6,966 shows strong capital attraction capability, even with zero funded accounts reported. IB model generating substantial deposits through broker networks.</td>
+<tr>
+<td>3</td>
+<td><strong>13 Campaigns Spent Money and Produced Zero Leads — $26,720 Unaccounted</strong></td>
+<td>13 campaigns generated real marketing spend but produced zero leads. The top three alone are LinkedIn campaigns that collectively spent over $13,225 with nothing to show. Total wasted across all 13 is approximately $26,720.</td>
+<td>LINKEDIN_AWARENESS_MAY-26: Spend $5,633, Leads = 0. LINKEDIN_TRAFFIC_BOF_MAY-26: Spend $4,586, Leads = 0.</td>
+<td>Any campaign that has been live long enough to accumulate significant spend must generate leads to justify continuation.</td>
+<td>$26,720 — 47% of the entire $57,007 budget — produced zero IB leads. These campaigns should have been paused and reviewed.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Top Campaign by Spend Has CPL of $2,817 — 30× the Portfolio Average</strong></td>
+<td>The single largest campaign by spend (Google Search IB Generic MAY-26, $30,982) produced only 11 leads at CPL $2,817, versus the portfolio average of $94. It also produced zero funded IBs, making it the most expensive and least productive campaign.</td>
+<td>LEGACY_WW_GOOGLE_SEARCH_IB_GENERIC_MAY-26: Spend $30,982 — Leads 11 — CPL $2,817 — Funded IBs = 0</td>
+<td>CPL should be benchmarked against the portfolio average ($94). A 30× deviation requires immediate review and justification.</td>
+<td>$30,982 (54% of total spend) generated 0 funded IBs. This single campaign is the largest budget drain in the entire report.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>41 Campaigns Have Leads But Zero Signed IBs</strong></td>
+<td>41 campaigns — more than half of all campaigns — show leads recorded but zero IBs proceeding to the signing stage. This includes all WhatsApp reactivation dispatches, all email campaigns, and most IC-tagged campaigns.</td>
+<td>41 campaigns: Leads &gt; 0, Total Signed = 0 — includes WhatsApp Dispatch 1/2/3, all email reactivations, and IC campaigns</td>
+<td>IB campaigns must convert some portion of leads to signed IBs. A 0% signing rate across 41 campaigns signals a systemic funnel failure.</td>
+<td>The majority of leads generated have no signing conversion. CPL is being paid for leads that go nowhere.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>A Live Campaign Is Named "__CAMPAIGN_NAME__" (Unfilled Placeholder)</strong></td>
+<td>A campaign using the literal template placeholder "__CAMPAIGN_NAME__" is active in the report with 2 leads recorded. This is an unfinished campaign setup that was accidentally pushed live.</td>
+<td>"__CAMPAIGN_NAME__": Leads = 2 — Signed = 0 — Spend = $0</td>
+<td>All campaigns must be fully configured with a real name before going live. Placeholders indicate a broken campaign creation process.</td>
+<td>2 leads are attached to a campaign that cannot be identified, tracked, or reported on. Any follow-up on these leads is impossible.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>A Live Campaign Is Named "120246610552490306" (A System ID, Not a Name)</strong></td>
+<td>A campaign named "120246610552490306" — clearly an internal system-generated numeric ID — appears in the live report with 1 lead. No one reading this report can determine what this campaign was, which channel it ran on, or who created it.</td>
+<td>"120246610552490306": Leads = 1 — Signed = 0 — Spend = $0</td>
+<td>Campaign names must be human-readable and follow the agreed naming convention. Raw system IDs are not valid names.</td>
+<td>This campaign's activity is completely unaccountable. If it runs in future with budget, no one will be able to audit it.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>14 Campaigns: IBs Signed but Zero Funded — Signing Funnel Dead End</strong></td>
+<td>14 campaigns have IBs who reached the signing stage but zero of them converted to funded (active) IBs. The most notable is the GCC LinkedIn campaign which spent $2,337, generated 2 leads, got 1 signed, and ended with 0 funded.</td>
+<td>LEGACY_GCC_AE_EN_IB_LINKEDIN_PRO_CAD_IB_JAN-26: Spend $2,337 — Leads 2 — Signed 1 — Funded IBs = 0</td>
+<td>Signed IBs must proceed to funding their account. A 0% Signed-to-Funded conversion rate is a complete funnel failure at the final stage.</td>
+<td>Spend on these 14 campaigns produced signed agreements but no active IBs. CPFIB for these campaigns is infinite.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>IB Clients Withdrew 94% of Their Deposits — Net Retention Is Only $166,742</strong></td>
+<td>IB clients deposited $2,853,388 but withdrew $2,686,645 — a withdrawal rate of 94.1%. Net retained IB client funds are only $166,742. The headline $2.85M deposit figure makes the IB channel look far stronger than the net position justifies.</td>
+<td>IB Clients: Deposits $2,853,388 — Withdrawals −$2,686,645 — Net retained = $166,742 (5.8%)</td>
+<td>Net client retention (Deposits minus Withdrawals) should be substantially positive to justify IB recruitment cost.</td>
+<td>The IB programme is generating $2.85M in gross deposits but retaining only $166K. ROI and deposit figures in reports are misleading without this context.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Unexplained "." Column — Now Confirmed Across All 4 Datasets</strong></td>
+<td>The unnamed "." column appears in every row of this file, always blank. It has now been found in MW Legacy, MW APP, MB+ Period Overview, and IB MW Legacy — confirming this is a systemic Power BI export misconfiguration affecting all reports.</td>
+<td>Column "." — present in all 85 rows including Total, always blank/NaN</td>
+<td>Every column must have a clear name and a documented business definition. Blank columns should be removed from all exports.</td>
+<td>A structural defect now confirmed in every dataset reviewed. No individual fix will work — requires a global correction to the Power BI export template.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">IB MW Legacy — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Data Governance (3 defects: placeholder name, number name, "." column) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <!-- Row 2: Funnel Failures (2 defects: 41 leads no signed, 14 signed no funded) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Funnel Failures</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Budget & Efficiency (2 defects: spend no leads, CPL 30x avg) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Budget &amp; Efficiency</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Report Quality (2 defects: IC in IB report, withdrawal rate) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Report Quality</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Pipeline (1 defect: P&L=0 vs ROI=50%) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Remove all 37 IC-tagged campaigns from this IB report immediately. They belong in a separate IC performance view. Mixing IC and IB funnels in one report makes all conversion rates (Leads to Signed, Signed to Funded IB) untrustworthy for both audiences.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Pause and review the 13 campaigns that have spent money but generated zero leads — especially the $30,982 Google Search campaign with CPL of $2,817. Establish a CPL threshold (e.g., 3× portfolio average = ~$280) and automatically flag or pause any campaign exceeding it.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Investigate why 41 campaigns are generating leads with zero signing conversions. Determine whether the issue is lead quality (wrong audience reached), a broken follow-up process, or a CRM tracking failure at the signing stage.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Enforce campaign naming rules at the point of creation — block any campaign from going live if the name contains "__CAMPAIGN_NAME__", is purely numeric, or does not match the agreed naming schema. Both current governance defects (#6 and #7) could be prevented by a simple validation check.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Add net IB client retention (Deposits minus Withdrawals) to all IB performance reports. The current $2.85M gross deposit figure looks strong, but $2.69M was withdrawn — leaving only $166,742 net. Decision-makers must see net figures, not just gross, before allocating more IB recruitment budget.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- IB - MW APP (MB+) TAB -->
 <div class="tab-content" id="ib-mw-app">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Clean Data Quality</strong></td>
-<td>No critical data quality issues detected. All calculations validated correctly. Data structure is complete and consistent.</td>
+<tr>
+<td>1</td>
+<td><strong>Total Spend = $0 — All Cost Metrics Broken</strong></td>
+<td>Spent $ = $0 across all 56 countries and the Total row. As a result, CPFIB, CPL, CPI, and CPC are all $0 throughout the entire report. The same data pipeline failure found across every other tab is present here too.</td>
+<td>Total: Spent = $0.00 — CPFIB = $0.00 — CPL = $0.00 — CPI = $0.00</td>
+<td>All IB recruitment spend must be recorded against campaigns and countries for cost efficiency metrics to work.</td>
+<td>IB acquisition cost is completely invisible. Cannot calculate cost per funded IB or cost per IB client from this report.</td>
 </tr>
-<tr style="background: #fef3c7;">
-<td style="text-align: center; font-size: 20px;">⚠️</td>
-<td><strong style="color: #78350f;">Very Limited Activity</strong></td>
-<td>Only 7 leads generated, 2 countries with deposits (Jordan, India). 92% of countries show $0 activity. This appears to be early-stage campaign or pilot phase.</td>
+<tr>
+<td>2</td>
+<td><strong>P&amp;L = $0 and ROI = 0% Despite $129,742 in Deposits</strong></td>
+<td>Total PL = $0 and ROI = 0% for all records, yet the programme deposited $129,742 and generated a positive net cash of $53,411. The report presents zero profitability where real financial activity clearly occurred.</td>
+<td>Total: Deposits $129,742 — Net Cash $53,411 — P&amp;L = $0.00 — ROI = 0.0%</td>
+<td>P&amp;L must reflect real financial outcomes. Positive net cash with zero P&amp;L is a data pipeline failure.</td>
+<td>Management sees 0% ROI on a programme that is generating positive returns. Investment decisions based on this will be wrong.</td>
 </tr>
-<tr style="background: #dbeafe;">
-<td style="text-align: center; font-size: 20px;">ℹ️</td>
-<td><strong style="color: #1e3a8a;">Jordan Focus</strong></td>
-<td>Jordan represents 98% of deposits ($6,198 of $6,299 total). Concentrated activity suggests targeted IB partnership or specific market test.</td>
+<tr>
+<td>3</td>
+<td><strong>100% Leads-to-Signed Rate Across All 17 Active Countries — Statistically Implausible</strong></td>
+<td>Every single country with leads shows exactly 100% signing rate — Leads always equals Signed. Having zero failed sign-ups across 17 different markets and 40 leads is not realistic and strongly suggests leads are only recorded after signing, not at the point of inquiry.</td>
+<td>All 17 countries: Leads = Signed. Costa Rica: 13 leads, 13 signed. India: 6 leads, 6 signed.</td>
+<td>A genuine lead funnel should show some drop-off between inquiry and signing. A 100% rate means the lead stage is not being tracked.</td>
+<td>Lead quality and qualification cannot be measured. The lead count is a duplicate of the signed count and adds no analytical value.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Zero Clicks, Zero Downloads, Zero Impressions Across All 56 Countries</strong></td>
+<td>The entire app acquisition funnel — Impressions, Clicks, Downloads/Installs — shows $0 for every country. Yet 1,056 sessions are recorded. There is no traceable path explaining how these sessions arrived in the app.</td>
+<td>Total: Impressions = 0 — Clicks = 0 — Downloads = 0 — Sessions = 1,056</td>
+<td>App sessions must be preceded by either an ad click, a direct download, or a referral link. Sessions appearing from nowhere indicate a broken tracking chain.</td>
+<td>The origin of every single IB app session is unknown. Cannot assess any app channel's contribution to IB recruitment.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>UAE: 330 Sessions, Zero Leads, Zero Deposits</strong></td>
+<td>UAE has the second-highest session count (330) in the entire dataset, yet shows zero leads and $0 deposits. In every other tab, UAE is the top-performing market. Here it is completely dead with no flag or explanation.</td>
+<td>UAE: Sessions = 330 — Clicks = 0 — Leads = 0 — Deposits = $0.00</td>
+<td>Top-traffic markets must show measurable lead conversion. UAE generating zero from 330 sessions requires an immediate investigation.</td>
+<td>The most important market in the portfolio is producing nothing from this channel. Unknown whether it is a tracking failure or a genuine conversion problem.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>398 Sessions Are "Untracked" — 37.7% of All App Traffic</strong></td>
+<td>An "Untracked" row holds 398 of 1,056 total sessions — 37.7% — with zero leads and zero deposits. More than a third of all IB app traffic has no country attribution, making geographic analysis meaningless for a significant portion of activity.</td>
+<td>Untracked: Sessions = 398 (37.7% of 1,056 total) — Leads = 0 — Deposits = $0.00</td>
+<td>All app sessions must be geo-attributed. Untracked traffic above 5% indicates a UTM tagging or SDK configuration problem.</td>
+<td>Over a third of IB app traffic is invisible to market-level analysis. Country-level conversion rates are all understated.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>CPFA under IB Differs Between the Two Data Files — Same Filters, Different Result</strong></td>
+<td>The CPFA under IB metric shows $1,140.14 in data file 1 (account type view) and $1,032.15 in data file 2 (country view). Both extracts use identical filters (Year 2026, IB Campaigns Yes, App User APP), yet produce a $107.99 discrepancy in the same metric.</td>
+<td>Account-type file: CPFA = $1,140.14 — Country file: CPFA = $1,032.15 — Same filters, $108 gap</td>
+<td>The same metric with identical filters must produce an identical value regardless of which dimension is used as the row grouping.</td>
+<td>Decision-makers will see different CPFA values depending on which report they open. One is wrong. Neither can be trusted without investigation.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Malaysia: Withdrawals ($30,480) Are Nearly Double Its Deposits ($17,000)</strong></td>
+<td>Malaysia deposited $17,000 but withdrew $30,480, a net loss of $13,480. This is the only market with a negative net cash position, and it is deeply negative — withdrawals are 1.79× deposits. This is not flagged anywhere in the report.</td>
+<td>Malaysia: Deposits $17,000 — Withdrawals −$30,480 — Net = −$13,480</td>
+<td>Net cash per market must be positive to justify continued IB recruitment spend in that geography.</td>
+<td>The Malaysia IB is a net cash drain. Any budget directed at this market is producing a negative financial return.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>India Accounts for 66.5% of All Deposits from Only 15% of Leads</strong></td>
+<td>India contributes $86,254 of $129,742 total deposits (66.5%) from just 6 of 40 leads (15%). The entire programme's deposit performance is driven by a single market, masking near-zero contribution from the other 16 active countries.</td>
+<td>India: 6 leads (15%) → $86,254 deposits (66.5% of total $129,742)</td>
+<td>A sustainable IB channel should show diversified deposit contribution. Over 60% concentration in one market is a significant risk.</td>
+<td>If India underperforms in any future period, total IB APP deposits could fall by two-thirds. Other markets appear productive but are contributing very little.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Two Unnamed Columns in the Account-Type Data File — "." and "%"</strong></td>
+<td>The account-type summary file (data file 1) contains two columns with no meaningful names: the recurring "." (blank, now found across every dataset reviewed) and a new "%" column showing value 1.0 for all rows with no label or context — it is impossible to know what it measures without guessing.</td>
+<td>Column "." = blank. Column "%" = 1.0 for all rows. No header, no definition, no business context.</td>
+<td>Every exported column must have a clear, unambiguous name and a documented business definition.</td>
+<td>The "%" column value of 1.0 could represent Leads-to-Signed % (also 1.0), but this is a guess. Ambiguous columns undermine report credibility and can cause calculation errors downstream.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">IB MW APP (MB+) — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Data Pipeline Issues (2 defects: Spend=$0, P&L=$0) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="61">2</text>
+      <!-- Row 2: Tracking Gaps (2 defects: zero clicks/downloads, untracked sessions) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Tracking Gaps</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Funnel Logic Issues (2 defects: 100% sign rate, UAE 330 sessions 0 leads) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Funnel Logic Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Financial Reporting (2 defects: Malaysia negative, India concentration) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Financial Reporting</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Governance (2 defects: CPFA mismatch, unnamed columns) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="220" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="380" y="341">2</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fix the app session tracking immediately. 1,056 sessions are being recorded with zero clicks, zero downloads, and zero impressions — meaning no entry point into the app is being captured. Without fixing this, the source of every IB app lead is unknown and the channel cannot be optimised or replicated.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Change how IB leads are recorded — currently the "lead" stage is identical to the "signed" stage (100% conversion across all 17 countries). Leads must be captured at first inquiry or expression of interest, not at the point of signing, so that the qualifying and nurturing stages can be tracked and improved.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Investigate UAE urgently. With 330 app sessions and zero leads, the highest-traffic market in this report is producing nothing. Determine whether this is a tracking failure (leads not being linked to UAE app sessions) or a real conversion problem before drawing any conclusions about UAE IB appetite.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Stop reporting on Malaysia as a positive IB market. It deposited $17,000 but withdrew $30,480, a net loss of $13,480. Review the IB agreement and retention plan for this market before any further recruitment investment is made there.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Investigate and resolve the CPFA discrepancy between the two data files ($1,140 vs $1,032 for identical filters). Until this is resolved, neither figure should be used in performance reviews or budget justifications. Raise with the Power BI data model owner to identify the aggregation error causing the gap.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- IB OVERVIEW TAB -->
 <div class="tab-content" id="ib-overview">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Complete IB Program Data</strong></td>
-<td>Comprehensive view of entire IB program with 97 total IBs tracked through complete journey from initial contact to funded clients. Data quality excellent (95/100).</td>
+<tr>
+<td>1</td>
+<td><strong>ROI of 6,306% Uses Gross Deposits — Real Net ROI is 635%</strong></td>
+<td>The headline ROI of 6,306.53% is calculated as Gross IB Client Deposits ÷ Spend ($3,595,156 ÷ $57,007). It completely ignores the $3,233,163 in withdrawals. Calculated on actual net retained funds, ROI is 635% — ten times lower than reported.</td>
+<td>Gross deposits $3,595,156 ÷ Spend $57,007 = 6,306%. Net deposits $361,993 ÷ Spend $57,007 = 635%.</td>
+<td>ROI must be calculated on net cash (Deposits minus Withdrawals), not gross deposits. Withdrawals represent real money leaving the business.</td>
+<td>Management is seeing a ROI figure 10× higher than the real net return. Any budget decision based on 6,306% is built on an inflated denominator.</td>
 </tr>
-<tr style="background: #dbeafe;">
-<td style="text-align: center; font-size: 20px;">ℹ️</td>
-<td><strong style="color: #1e3a8a;">ROI at 2,497%</strong></td>
-<td>IB Overview shows ROI of 2,497% for IB Clients, indicating strong profitability from IB-sourced customer deposits. This leverage effect demonstrates value of IB partnership model.</td>
+<tr>
+<td>2</td>
+<td><strong>Marketing Spend Collapses 99.98% from January Through April</strong></td>
+<td>Spend falls from $7,818 in January to $32 in February, $1.60 in March, and $0.00 in April — yet IB activity (83 IBs in March, 82 in April) continues throughout. Either spend data is not being captured during these months, or recruitment was accidentally left unfunded for a quarter.</td>
+<td>Jan: $7,818 → Feb: $32 → Mar: $1.60 → Apr: $0.00 — while 82–83 IBs remain active each month</td>
+<td>Spend must be recorded consistently every month. Three consecutive months of near-zero spend while generating IBs indicates a tracking or funding failure.</td>
+<td>$0 spend in March and April makes CPL, CPFIB, and ROI meaningless for Q1. Cannot determine what drove IB activity in those months.</td>
 </tr>
-<tr style="background: #fef3c7;">
-<td style="text-align: center; font-size: 20px;">⚠️</td>
-<td><strong style="color: #78350f;">Conversion Drop-Off</strong></td>
-<td>Significant drop from 97 total IBs → 39 signed (40%) → 11 with clients (28%) → 3 with funded clients (27%). Opportunity to improve IB activation and client acquisition rates.</td>
+<tr>
+<td>3</td>
+<td><strong>Total IBs Down 50.6%, IB Clients Down 80.2%, Funded Clients Down 68.4% vs Prior Year</strong></td>
+<td>Year-on-year comparison shows severe across-the-board decline: IBs fell from 1,328 to 656 (−50.6%), IB clients from 4,165 to 824 (−80.2%), and funded IB clients from 1,254 to 396 (−68.4%). This collapse worsens month by month (March: clients −93.3%, funded −94.7%).</td>
+<td>Mar 2026: IB Clients −93.3% YoY | Apr 2026: IB Clients −91.1% YoY | Jun 2026: Funded Clients −92.1% YoY</td>
+<td>Year-on-year declines of this magnitude require immediate explanation and a documented response plan. Sustained 90%+ monthly drops are a business-level concern, not a data issue.</td>
+<td>The IB programme is generating a fraction of last year's output across every stage. Without a reported root cause, there is no basis for budget or strategy decisions.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>299 Leads (45.6%) Have No Uploaded Documents — Funnel Is Blocked at Entry</strong></td>
+<td>656 IB leads were generated but only 357 uploaded the required documentation. 299 leads — nearly half the pipeline — are stuck at the first gatekeeping step and cannot progress to signing without intervention.</td>
+<td>Total Leads: 656 — Uploaded Docs: 357 — Leads blocked without docs: 299 (45.6%)</td>
+<td>Document upload is a prerequisite for IB signing. Any lead without uploaded docs must be actively followed up within a defined SLA to avoid pipeline rot.</td>
+<td>Almost half of all IB leads are inactive. If even a portion of these 299 are recovered, it would meaningfully increase signed and funded IB numbers without any additional acquisition spend.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>57.3% of Signed IBs Never Generated a Single Client</strong></td>
+<td>293 IBs signed partnership agreements, but only 125 have any IB clients at all (42.7%). The remaining 168 signed IBs (57.3%) brought zero clients to the platform — they are dead partnerships that consumed onboarding cost with no commercial return.</td>
+<td>Signed IBs: 293 — With any clients: 125 — With zero clients: 168 (57.3%)</td>
+<td>A signed IB who generates no clients within a defined period (e.g. 90 days) should be flagged for reactivation or offboarding. Dead partnerships inflate the signed IB count without contributing revenue.</td>
+<td>More than half of signed IBs are not productive. The 168 dormant IBs are distorting the IB programme's apparent size and consuming support resources.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>IB Client Withdrawal Rate = 89.9% — Only $362K of $3.6M Gross Is Retained</strong></td>
+<td>IB clients deposited $3,595,156 but withdrew $3,233,163 — a 89.9% withdrawal rate. Only $361,993 is net-retained. The dashboard summary prominently displays Total Deposits of $4,043,814 without showing the net position of $521,289.</td>
+<td>IB Client Deposits: $3,595,156 — IB Client Withdrawals: −$3,233,163 — Net retained: $361,993 (10.1%)</td>
+<td>Reports must show net IB client cash alongside gross deposits. A 90% withdrawal rate is a critical retention signal that should be prominently flagged.</td>
+<td>The $4M gross deposits figure creates a misleadingly strong picture. Net retention across the entire IB programme is only $521,289 — 87% lower than the headline suggests.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Weekly ROI Swings from 0% to 29,531% — Metric Is Unusable for Trend Analysis</strong></td>
+<td>Weekly ROI values from the Summary Details file oscillate violently: 0% → 49% → 29,531% → 18,510% → 9,016% → 0% → 0% → 0% → 0.99%. These extreme swings are caused by single large deposits in isolated weeks, making the weekly ROI chart a misleading indicator of programme health.</td>
+<td>Week 5: ROI 29,531% | Week 6: 18,510% | Week 7: 9,016% | Weeks 11–18: ROI 0% | Week 19: 0.99%</td>
+<td>Weekly ROI should be smoothed (e.g. rolling 4-week average) or replaced with a cumulative YTD ROI to avoid single-transaction distortions.</td>
+<td>Any chart showing this weekly ROI data will appear erratic and unusable. Decision-makers cannot identify trends from a metric that jumps 29,000% in one week.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>64 IBs Uploaded Documents But Never Signed — 17.9% Late-Funnel Dropout</strong></td>
+<td>357 IBs uploaded their documents, but only 293 completed signing — meaning 64 IBs (17.9% of uploaders) went through a high-effort compliance step and then dropped out before signing. This late-stage dropout is not reported or tracked as a distinct failure point.</td>
+<td>Uploaded Docs: 357 — Total Signed: 293 — Dropped after uploading: 64 (17.9% of uploaders)</td>
+<td>Any IB who uploads documents but does not sign within a defined window should be in a specific sales follow-up queue. Document upload signals high intent.</td>
+<td>64 high-intent IB candidates are being lost at the final step before signing. Recovering even half would add 32 more signed IBs — a 10.9% increase — at zero additional acquisition cost.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>IB Own Withdrawal Rate = 64.5% — IBs Withdrawing Most of Their Own Deposits</strong></td>
+<td>IBs themselves deposited $448,658 (their own funds) but withdrew $289,362 — a 64.5% withdrawal rate, retaining only $159,296. Combined with the 89.9% IB client withdrawal rate, both sides of the IB relationship are withdrawing the majority of what they deposit.</td>
+<td>IB own deposits: $448,658 — IB own withdrawals: −$289,362 — Net retained: $159,296 (35.5%)</td>
+<td>IBs depositing their own funds signals commitment; high withdrawal rates signal low confidence or short-term use of the platform.</td>
+<td>Combined net retention across IBs and their clients is only $521,289 from $4,043,814 gross deposits — an 87.1% total withdrawal rate. The IB channel's financial sustainability must be reviewed.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>"." Column Now Confirmed in Every Single Dataset Across the Dashboard</strong></td>
+<td>The unnamed "." column appears in all three IB Overview files (Summary, Summary Details, Year Comparison). It has now been confirmed in every dataset reviewed: MW Legacy, MW APP, MB+ Period, IB MW Legacy, IB MW APP, and IB Overview. This is a global Power BI export template defect.</td>
+<td>Column "." — present in all rows of all six datasets, always blank. Never defined anywhere.</td>
+<td>A structural export defect confirmed across 6 out of 6 datasets is not an individual report problem — it requires a single fix to the global Power BI export template.</td>
+<td>Every export from this dashboard carries a silent broken column. Any downstream system or analyst consuming these files risks including this column in formulas, joins, or data models, causing silent errors.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">IB Overview — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Financial Reporting Issues (3 defects: ROI gross, IB client 89.9%, IB own 64.5%) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Financial Reporting</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <!-- Row 2: Funnel Failures (2 defects: 45.6% no docs, 17.9% doc-to-sign dropout) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Funnel Failures</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Performance Decline (2 defects: YoY -50%/-80%, 57.3% signed no clients) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Performance Decline</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Data Quality (2 defects: spend collapse, weekly ROI swings) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Data Quality</text>
+      <rect fill="#374151" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Governance (1 defect: "." column in all datasets) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Change the ROI calculation from Gross IB Client Deposits ÷ Spend to Net IB Client Cash ÷ Spend. The current method ignores $3.23M in withdrawals and overstates ROI by approximately 10×. Report both gross and net figures so management can see the full picture.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Investigate the spending cliff immediately. Three months (February $32, March $1.60, April $0) show near-zero recorded spend while IBs were still being generated. Confirm whether this is missing spend data or a genuine pause, and ensure all historical spend is correctly attributed before using monthly CPL or ROI figures for any planning.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Build a recovery campaign for the 299 leads without uploaded documents and the 64 who uploaded but did not sign. These 363 people are already in the funnel and have shown intent — re-engaging them costs nothing in acquisition spend and could increase signed IBs by up to 21.9%.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Address the year-on-year collapse with a formal root cause analysis. IB clients fell 80.2% and funded clients fell 68.4% versus last year. Until the reason is documented and a recovery plan is in place, any increase in IB recruitment budget risks funding a broken system.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Replace weekly ROI in the dashboard with a rolling 4-week or cumulative YTD ROI. The current weekly view swings from 0% to 29,531% and is meaningless for trend analysis. Also remove the "." column from the global Power BI export template — it has now been confirmed in every single dataset across the entire dashboard.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- OVERALL MW TAB -->
 <div class="tab-content" id="overall-mw">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Clean Overall Data Quality</strong></td>
-<td>92/100 QA score with no critical issues. Overall MW combines Legacy + APP campaigns showing aggregated performance across MW product line. Minor funnel inconsistencies (7) much lower than individual campaigns.</td>
+<tr>
+<td>1</td>
+<td><strong>Total P&amp;L = $0 in Both Data Files — Seventh Dataset with This Defect</strong></td>
+<td>Both the Marketing source file (data__9_) and the Sales source file (data__10_) show Total PL = $0 for every row. This broken pipeline has now been confirmed across seven consecutive datasets in this dashboard with no fix applied.</td>
+<td>Marketing total: Deposits $9,112,025 — P&amp;L = $0. Sales total: Deposits $4,196,318 — P&amp;L = $0.</td>
+<td>P&amp;L must reflect real financial outcomes. Seven datasets with $0 P&amp;L is a systemic, unresolved pipeline failure.</td>
+<td>ROI cannot be cross-validated against P&amp;L in any tab. Every profitability figure in this dashboard is operating without a P&amp;L check.</td>
 </tr>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Strong Performance Metrics</strong></td>
-<td>$2.07M deposits from $79.9K spend shows 25.9x deposit leverage. 342 funded accounts with $6,046 average deposit indicates high customer value. UAE driving 76% of deposits ($1.58M).</td>
+<tr>
+<td>2</td>
+<td><strong>ROI Stored as Raw Ratio (10.59) Not Percentage — Would Display as 1,058%</strong></td>
+<td>The Marketing file stores ROI as 10.5864. This is the raw ratio (Gross Deposits ÷ Spend = $9,112,025 ÷ $860,733 = 10.59×). If displayed directly as a percentage it would show 10.59% — but the correct display is 1,058.64%. Any tool consuming this raw value without multiplying by 100 will show a figure 100× too low.</td>
+<td>File value: 10.5864 — Correct display: 1,058.64% — Gross Deposits/Spend: $9.11M/$861K = 10.59×</td>
+<td>ROI must be stored and displayed consistently — either as a decimal multiplier (10.59×) or a percentage (1,058%). Mixed usage causes misreads.</td>
+<td>Any analyst or system reading 10.59 as a percentage will conclude the programme earns only 10.59 cents per dollar spent — 100× worse than reality.</td>
 </tr>
-<tr style="background: #fef3c7;">
-<td style="text-align: center; font-size: 20px;">⚠️</td>
-<td><strong style="color: #78350f;">Minor Data Gaps</strong></td>
-<td>3 missing values in non-critical fields and 7 minor funnel inconsistencies detected. These don't impact overall portfolio metrics but should be reviewed in source data.</td>
+<tr>
+<td>3</td>
+<td><strong>India Is Net Cash-Negative (−$74,462) Yet Shows the Highest ROI (24.77%)</strong></td>
+<td>India deposited $610,443 but withdrew $684,904 — a 112.2% withdrawal rate — leaving a net loss of $74,462. Despite this, India shows the highest ROI of any country (24.77%) because ROI is calculated on gross deposits. The report presents India as the best-performing market when it is the only net cash-negative one.</td>
+<td>India: Deposits $610,443 — Withdrawals −$684,904 — Net = −$74,462 — ROI shown: 24.77%</td>
+<td>ROI must reflect net cash position, not gross deposits. A market with more outflows than inflows should never rank as top performer.</td>
+<td>Budget decisions based on India's 24.77% ROI could increase investment in the one market that is actually losing money net of withdrawals.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>3 Countries Show More Leads Than App Installs (Mathematically Impossible)</strong></td>
+<td>UAE (2,633 installs → 3,714 leads, ratio 1.41×), India (2,273 → 2,546, ratio 1.12×), and Australia (1,114 → 1,904, ratio 1.71×) all show more leads than app downloads. On an app-based platform, leads cannot be generated without a prior install.</td>
+<td>Australia: 1,114 downloads → 1,904 leads (Installs to Leads % = 1.71×). UAE: 2,633 downloads → 3,714 leads (1.41×).</td>
+<td>Installs to Leads % must always be ≤ 1.0. Leads cannot exceed total app installs.</td>
+<td>Install counts are being undercounted or leads are being overcounted for three of the seven target markets. Funnel efficiency metrics for these countries are unreliable.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>CPI = $0 for All 7 Countries Despite 14,529 Downloads</strong></td>
+<td>CPI (Cost Per Install) = $0 for every one of the seven target countries, even though 14,529 total app downloads are recorded. The same spend attribution failure seen in the MW APP tab persists in the Overall MW view, making install acquisition cost invisible across the entire portfolio.</td>
+<td>Total: 14,529 downloads across UAE (2,633), Canada (5,100), Australia (1,114) and 4 others — CPI = $0 everywhere.</td>
+<td>CPI = Spend ÷ Installs. With $860,733 in spend and 14,529 installs, CPI should be approximately $59 — not $0.</td>
+<td>Cannot evaluate app channel efficiency or compare install costs across markets. The entire mobile acquisition funnel is uncosted.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Marketing and Sales Sources Presented Together Without Clear Separation</strong></td>
+<td>The Overall MW view draws from two fundamentally different data files: one filtered for Business Source = Marketing (11,898 leads, $9.1M deposits) and one for Business Source = Sales (523 leads, $4.2M deposits). These represent different acquisition channels but are presented under the same "Overall MW" heading without distinction.</td>
+<td>Marketing source: 11,898 leads, $9.11M deposits. Sales source: 523 leads, $4.20M deposits. No combined or labelled view exists.</td>
+<td>Marketing-sourced and Sales-sourced customers have different cost structures and funnel logic. Blending them without labels produces misleading aggregate metrics.</td>
+<td>Per-lead and per-funded costs cannot be compared across tabs if the underlying source population changes. Stakeholders may unknowingly compare marketing CPL against a mixed Marketing+Sales figure.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Invalid Stage in Sales Data: CPFA = $860,733 — Entire Budget Attributed to One Account</strong></td>
+<td>In the Sales source data, the Invalid account stage shows 13 leads and 1 funded account. The calculated CPFA for this row is $860,733 — equal to the total marketing spend — because the formula is attributing the entire portfolio spend to the single funded account in this stage.</td>
+<td>Invalid stage: 13 leads — 1 funded account — CPFA = $860,733 (= total spend of $860,733)</td>
+<td>CPFA must be calculated using only the spend attributable to that stage, not the total portfolio spend. Invalid accounts should be excluded from cost calculations entirely.</td>
+<td>A CPFA of $860,733 for an invalid account will corrupt any average cost calculation that includes this row. Anyone reviewing this figure without context will be misled.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>IC Lead Stage in Sales Data: 25 Leads, Zero Accounts, Zero Deposits</strong></td>
+<td>The Sales source data shows 25 IC Lead entries that produce zero accounts, zero funded accounts, and $0 in deposits — the same dead-end funnel pattern found in the MW Legacy and MB+ Period Overview tabs. These 25 inflate the total lead count (523) without contributing any business value.</td>
+<td>Sales / IC Lead: 25 leads → 0 accounts → 0 funded → $0 deposits</td>
+<td>Every lead category must have a traceable conversion path. A stage producing $0 across all downstream metrics should be excluded from active funnel reporting.</td>
+<td>IC leads in a Sales-sourced dataset are likely misclassified or unreachable. They skew the Leads to Accounts % downward for the entire Sales channel.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Australia Uses 28.4% of Budget but Delivers One of the Lowest Deposit Returns</strong></td>
+<td>Australia received $244,800 in spend — 28.4% of the total $860,733 budget — but generated only $515,564 in deposits (gross ROI 211%). By comparison, Spain received $13,318 (1.5% of budget) and generated $289,347 in deposits (gross ROI 2,173%). Australia's cost efficiency is approximately 10× worse than Spain's.</td>
+<td>Australia: Spend $244,800 (28.4% of budget) → ROI 211%. Spain: Spend $13,318 (1.5%) → ROI 2,173%.</td>
+<td>Budget allocation should track deposit ROI. Markets receiving a disproportionate share of spend while underperforming on returns must be reviewed and reallocated.</td>
+<td>$244,800 is directed to the lowest-ROI major market. Reallocating even half of this budget to higher-performing markets would significantly improve overall portfolio returns.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>"." Column Present in Both Files — Confirmed in All 7 Datasets Reviewed</strong></td>
+<td>The unnamed "." column appears in both data__9_ and data__10_, always blank. It has now been confirmed in every single dataset reviewed across the entire dashboard: MW Legacy, MW APP, MB+ Period, IB MW Legacy, IB MW APP, IB Overview, and now Overall MW — all 7 datasets.</td>
+<td>Column "." — present in all rows of both files, always blank/NaN, no definition in any file.</td>
+<td>A blank column present in 7 of 7 datasets is a systemic defect in the global Power BI export template, not a per-report issue.</td>
+<td>Every downstream consumer of these exports — analysts, databases, automated scripts — must manually strip this column. A single fix to the export template would eliminate it across all reports simultaneously.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">Overall MW — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <!-- X-axis labels -->
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <!-- Row 1: Financial Reporting (3 defects: India net neg, Australia ROI, Invalid CPFA) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Financial Reporting</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <!-- Row 2: Funnel Logic Issues (2 defects: Leads>Installs, IC Lead dead end) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Funnel Logic Issues</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <!-- Row 3: Data Pipeline (2 defects: P&L=0, CPI=0) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Data Pipeline Issues</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <!-- Row 4: Report Structure (2 defects: Marketing/Sales mixed, ROI decimal) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Report Structure</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <!-- Row 5: Data Governance (1 defect: "." column in all 7 datasets) -->
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fix the ROI calculation to use net cash (Deposits minus Withdrawals minus Spend) instead of gross deposits, and apply this change across all tabs simultaneously. India's 24.77% "top-performing" ROI is built on a market that is net cash-negative. The current gross-based ROI is actively misleading budget decisions in favour of the wrong markets.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Standardise how ROI is stored in all exports — as a true percentage (1,058%) not a raw ratio (10.59). Document the formula and expected unit in the Power BI data model so every consuming tool interprets the value consistently. Apply the same fix to the P&amp;L pipeline, which has now returned $0 across seven consecutive datasets.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Urgently review Australia's budget allocation. At $244,800 spend and 211% gross ROI, it is consuming 28.4% of the budget at roughly one-tenth the capital efficiency of Spain. Run a structured efficiency review across all 7 target markets and rebalance spend toward the highest net ROI countries.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Clearly label and separate Marketing-sourced and Sales-sourced data in the Overall MW view. Presenting them under the same heading without distinction makes it impossible to compare per-lead costs, conversion rates, or ROI between the two channels. Each source should have its own clearly marked section or sub-tab.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Remove the "." column from the global Power BI export template. It has appeared in all 7 datasets reviewed. A single template fix takes minutes and eliminates a silent structural defect from every export produced by this dashboard, preventing downstream errors in any system or analyst workflow that consumes these files.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 <!-- DEMO COMPETITION 2026 TAB -->
 <div class="tab-content" id="demo-comp">
-        <h3 class="section-title">Quality Assurance Findings</h3>
-        <table style="margin-bottom: 30px;">
+
+<h3 class="section-title">Defect Summary</h3>
+<table>
 <thead>
 <tr>
-<th style="width: 40px;"></th>
-<th>Finding</th>
-<th>Details</th>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">⭐</td>
-<td><strong style="color: #065f46;">Complete Funnel Tracking - Perfect Score</strong></td>
-<td>All funnel stages tracked: Impressions → Clicks → Sessions → Real Visitors → Demo Accounts → Live Accounts. Has LPV % and Bounce Rate data. 100/100 QA score.</td>
+<tr>
+<td>1</td>
+<td><strong>Only 1 Funded Account from $48,405 Spend — ROI = 0.21%</strong></td>
+<td>The entire 10-country campaign generated 3,198 demo accounts and 459 live accounts, but only 1 funded account — in Turkey with a single $100 deposit. Total NMI is $100, making ROI 0.21%. For every $48,405 invested, the campaign returned $100 in net income.</td>
+<td>Total: Spend $48,405 — Demo Accounts 3,198 — Live Accounts 459 — Funded Accounts 1 — NMI $100 — ROI 0.21%</td>
+<td>A demo competition campaign's commercial goal is converting demo traders to funded live accounts. 1 funded account from 3,198 demos (0.03% conversion) is a near-complete commercial failure.</td>
+<td>The campaign spent $48,405 and returned $100 — a net loss of $48,305. Without any funded conversion path, this campaign cannot justify its budget on financial grounds alone.</td>
 </tr>
-<tr style="background: #d1fae5;">
-<td style="text-align: center; font-size: 20px;">✅</td>
-<td><strong style="color: #065f46;">Excellent Cost Efficiency</strong></td>
-<td>CPC of $0.25 and CPM of $2.68 are best across all campaigns. Cost per Demo Account at $15.76 shows highly efficient lead generation.</td>
+<tr>
+<td>2</td>
+<td><strong>Turkey's CPA ($765) Is 25× Higher Than Pakistan's ($30) — Budget Not Aligned to Efficiency</strong></td>
+<td>Turkey is the highest-cost market at $765.34 per live account and $71.19 per demo, yet it received 12.6% of the budget. Pakistan delivers live accounts at $30.18 and demos at just $3.79 while receiving 10.7% of budget. The allocation does not reflect the 25× CPA difference between these two markets.</td>
+<td>Turkey: CPA $765, Cost per Demo $71, 8 live accounts. Pakistan: CPA $30, Cost per Demo $3.79, 172 live accounts.</td>
+<td>Budget should be weighted toward the most cost-efficient markets. A 25× CPA gap between markets in the same campaign indicates misaligned allocation.</td>
+<td>$6,123 directed at Turkey produces 8 live accounts. The same spend in Pakistan would theoretically produce ~203 live accounts at the same conversion rate.</td>
 </tr>
-<tr style="background: #dbeafe;">
-<td style="text-align: center; font-size: 20px;">ℹ️</td>
-<td><strong style="color: #1e3a8a;">Different Campaign Model</strong></td>
-<td>This is a lead generation / demo account campaign, not focused on deposits or funded accounts. Success metrics are Demo Accounts created and Live Account conversions, not CPFA or ROI.</td>
+<tr>
+<td>3</td>
+<td><strong>46.1% of Sessions Filtered Out as Non-Real Visitors — Half of All Traffic Discarded</strong></td>
+<td>85,675 sessions were recorded, but the Real Visitors filter removed 39,499 (46.1%), leaving only 46,176 usable visitors. Turkey loses 67.2% of its sessions at this step, Qatar 58.3%, and KSA 53.4%. Nearly half of all ad-driven traffic is immediately classified as non-qualifying.</td>
+<td>Total: 85,675 sessions → 46,176 real visitors (46.1% filtered). Turkey: 6,747 sessions → 2,213 real visitors (67.2% filtered).</td>
+<td>A session filter removing more than 30% of traffic indicates poor ad targeting, bot traffic, or very low dwell time from mismatched audiences.</td>
+<td>The campaign is paying for approximately 39,500 sessions that produce zero value. Improving targeting quality would significantly lower the true cost per real visitor and per demo account.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>UAE: 23.8% of Budget, Most Live Accounts — Yet Zero Funded and $0 Deposits</strong></td>
+<td>UAE received the largest budget share ($11,499, 23.8%), generated the most demo accounts (349) and live accounts (65) — but has zero funded accounts and $0 in deposits. The top spend market produces no financial return at all.</td>
+<td>UAE: Spend $11,499 (23.8%) — Demo Accounts 349 — Live Accounts 65 — Funded Accounts 0 — Deposits $0.00</td>
+<td>The highest-spend market must show proportional funded conversion. 65 live accounts with zero deposits means the live-to-funded step is completely broken for UAE.</td>
+<td>$11,499 generated $0 in net income. Any further UAE spend without fixing the funded conversion gap will continue producing zero financial return.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Pakistan: 1,368 Demo Accounts (42.8% of Total) at $3.79 Each — Zero Funded</strong></td>
+<td>Pakistan produced 1,368 demo accounts — 42.8% of all 3,198 demos — at the cheapest cost in the portfolio ($3.79 per demo, $30.18 per live account). Despite generating by far the most volume, not a single Pakistani user converted to a funded account.</td>
+<td>Pakistan: 1,368 demos (42.8% of 3,198), Cost per Demo $3.79, Live Accounts 172, Funded Accounts 0, $0 deposits.</td>
+<td>Demo volume has no commercial value unless demos convert to funded accounts. The cheapest market by acquisition cost must still be assessed on its funded conversion rate.</td>
+<td>Pakistan appears to be the most efficient country by volume metrics but contributes nothing to revenue. The post-demo nurture process for Pakistan is either absent or failing entirely.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Average Bounce Rate = 45.1% — Turkey at 66.9%, Five Countries Above 42%</strong></td>
+<td>The overall average bounce rate is 45.1%, with Turkey at 66.9%, Qatar at 57.7%, KSA at 52.9%, Malaysia at 48.2%, and Azerbaijan at 44.4%. In Turkey, 2 in every 3 visitors leave the landing page immediately without any engagement.</td>
+<td>Turkey: 66.9% bounce rate. Qatar: 57.7%. KSA: 52.9%. Total average: 45.1%.</td>
+<td>Bounce rates above 40% for a lead generation landing page indicate a mismatch between ad creative and page content, or a poor landing page experience for that audience.</td>
+<td>High bounce rates mean a significant share of clicks — and budget — is wasted on visitors who never engage. Turkey's 66.9% bounce rate makes it the most wasteful market in the campaign.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>LPV %, Bounce Rate, and CTR Stored as Decimals — Same 100× Display Risk as Other Tabs</strong></td>
+<td>LPV % (0.4549), Bounce Rate (0.4506), and CTR % (0.010272) are stored as raw decimal fractions in the export file. Any analyst or system reading the raw file without applying a x100 multiplier will see 0.45% instead of 45.49% for LPV. The same format defect already flagged in ROI fields across other tabs.</td>
+<td>LPV % stored: 0.4549 → correct display: 45.49%. Bounce Rate: 0.4506 → 45.06%. CTR: 0.010272 → 1.03%.</td>
+<td>Percentage metrics must be stored and documented consistently — either always as true percentages or always as decimal fractions with a clear format convention.</td>
+<td>Three key engagement metrics will be misread as 100× lower than their real values by any analyst consuming the raw export. Systemic format problem confirmed across multiple tabs.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>CPFA = $48,405 — Entire Campaign Spend Attributed to One $100 Deposit</strong></td>
+<td>Total CPFA equals the entire campaign spend ($48,404.63) because there is only 1 funded account. Turkey's CPFA ($6,122.69) equals all of Turkey's spend, attributed to a single $100 deposit. This makes CPFA a completely uninformative metric for this campaign.</td>
+<td>Total CPFA = $48,404.63 (all spend / 1 funded account). Turkey CPFA = $6,122.69 for a $100 deposit.</td>
+<td>CPFA is meaningful only with multiple funded accounts. When it equals total spend, it communicates nothing about acquisition efficiency and should not be reported.</td>
+<td>A reported CPFA of $48,405 for a funded account with a $100 deposit will immediately undermine credibility with any reader familiar with normal CPFA benchmarks.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>54.5% of Clicks Do Not Become Sessions — Over 100,000 Paid Clicks Wasted</strong></td>
+<td>188,324 ad clicks were recorded but only 85,675 sessions followed — meaning 102,649 clicks (54.5%) never resulted in a landing page session. Every country shows this loss. Azerbaijan's ratio is only 0.34 sessions per click, suggesting widespread click fraud, landing page load failures, or cross-device tracking gaps.</td>
+<td>Total: 188,324 clicks → 85,675 sessions (0.45 ratio). Azerbaijan: 18,248 clicks → 6,177 sessions (0.34 ratio).</td>
+<td>A click-to-session rate below 0.70 indicates material tracking loss or click fraud. Industry benchmark is 0.75–0.90.</td>
+<td>Over 100,000 clicks are being paid for but never reaching the site. At $0.26 average CPC, this represents approximately $26,600 in spend — 55% of the entire campaign budget — generating zero sessions.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>"." Column Present — Confirmed in All 8 Datasets Across the Entire Dashboard</strong></td>
+<td>The unnamed "." column appears in the Demo Competition file, always blank. It has now been confirmed in every single data file reviewed across this entire dashboard — all eight datasets: MW Legacy, MW APP, MB+ Period, IB MW Legacy, IB MW APP, IB Overview, Overall MW, and Demo Competition 2026.</td>
+<td>Column "." — present in all 13 rows of the Demo Competition file, always blank/NaN.</td>
+<td>A blank column confirmed in 8 of 8 datasets is a systemic defect requiring one fix to the global Power BI export template.</td>
+<td>Complete dashboard-wide confirmation. Every export from this system carries this defect. One template fix resolves it across all current and future reports simultaneously.</td>
 </tr>
 </tbody>
-</table></div>
+</table>
+
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+  <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">Demo Competition 2026 — Defect Summary</div>
+    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+    <svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"/>
+      <line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"/>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+      <text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="55">Conversion Failures</text>
+      <rect fill="#7f1d1d" height="50" rx="8" width="330" x="150" y="30"/>
+      <text fill="#fca5a5" font-size="13" font-weight="bold" x="490" y="61">3</text>
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="125">Traffic Quality</text>
+      <rect fill="#1e4080" height="50" rx="8" width="220" x="150" y="100"/>
+      <text fill="#93c5fd" font-size="13" font-weight="bold" x="380" y="131">2</text>
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="195">Spend Efficiency</text>
+      <rect fill="#14532d" height="50" rx="8" width="220" x="150" y="170"/>
+      <text fill="#86efac" font-size="13" font-weight="bold" x="380" y="201">2</text>
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="265">Data Format Issues</text>
+      <rect fill="#374151" height="50" rx="8" width="220" x="150" y="240"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="380" y="271">2</text>
+      <text fill="#e5e7eb" font-size="13" text-anchor="end" x="135" y="335">Data Governance</text>
+      <rect fill="#374151" height="50" rx="8" width="110" x="150" y="310"/>
+      <text fill="#d1d5db" font-size="13" font-weight="bold" x="270" y="341">1</text>
+    </svg>
+  </div>
+
+  <div style="flex:1.5;">
+    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+    <table>
+    <thead>
+    <tr>
+    <th style="width: 40px;">#</th>
+    <th>Recommendation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Build a dedicated funded-account conversion path for live demo users before the next competition cycle. 459 users made it to a live account but only 1 funded. This is a post-demo nurture failure, not an acquisition failure — the campaign successfully drives registrations but there is no process to move live account holders to deposit and fund.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Investigate the 54.5% click-to-session drop before the next campaign launch. Over 100,000 paid clicks — roughly $26,600 — are not resulting in landing page visits. Check for landing page load errors and click fraud, particularly in Azerbaijan (0.34 sessions per click) and Kazakhstan (0.41 sessions per click).</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Reallocate budget from Turkey toward Pakistan, Uzbekistan, and Indonesia. Turkey costs 25x more per live account than Pakistan and has the highest bounce rate (66.9%). Shifting even $3,000 from Turkey to Pakistan at Pakistan's conversion rate would theoretically generate ~100 additional live accounts at no extra total spend.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Run A/B tests on landing page localisation for Turkey and Qatar, both with bounce rates above 55%. Improve ad-to-page message matching and add a minimum engagement time threshold to the Real Visitors definition so it is documented, reproducible, and consistent across reporting periods.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Fix the metric format convention in Power BI exports — LPV %, Bounce Rate, and CTR are stored as decimal fractions but must display as percentages. Resolve this alongside the global removal of the "." column. Both are export template issues that a Power BI developer can fix in a single session, eliminating these defects from all 8 datasets simultaneously.</td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
 </div>
 
 <!-- Footer -->
