@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MultiBank Group - Executive Dashboard</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MultiBank Group - Executive Dashboard</title>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -256,2213 +257,411 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="header-left">
-            <h1>MULTIBANK GROUP - Executive Dashboard</h1>
-            <p>Generated: June 22, 2026 | Report Period: June 2026</p>
-        </div>
-    </div>
-    
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('exec-summary')">Executive Summary</button>
-        <button class="tab" onclick="switchTab('mw-legacy')">MW Legacy</button>
-        <button class="tab" onclick="switchTab('mw-app')">MW APP (MB+)</button>
-        <button class="tab" onclick="switchTab('mb-plus')">MB+ Period Overview</button>
-        <button class="tab" onclick="switchTab('ib-mw-legacy')">IB - MW Legacy</button>
-        <button class="tab" onclick="switchTab('ib-mw-app')">IB - MW APP (MB+)</button>
-        <button class="tab" onclick="switchTab('ib-overview')">IB Overview</button>
-        <button class="tab" onclick="switchTab('overall-mw')">Overall MW</button>
-        <button class="tab" onclick="switchTab('demo-comp')">Demo Competition 2026</button>
-    </div>
-    
-    <!-- Content Container -->
-    <div class="content">
-        
-        <!-- EXECUTIVE SUMMARY TAB -->
-        <div id="exec-summary" class="tab-content active">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<h1>MULTIBANK GROUP - Executive Dashboard</h1>
+<p>Generated: June 22, 2026 | Report Period: June 2026</p>
+</div>
+</div>
+<!-- Tabs -->
+<div class="tabs">
+<button class="tab active" onclick="switchTab('exec-summary')">Executive Summary</button>
+<button class="tab" onclick="switchTab('mw-legacy')">MW Legacy</button>
+<button class="tab" onclick="switchTab('mw-app')">MW APP (MB+)</button>
+<button class="tab" onclick="switchTab('mb-plus')">MB+ Period Overview</button>
+<button class="tab" onclick="switchTab('ib-mw-legacy')">IB - MW Legacy</button>
+<button class="tab" onclick="switchTab('ib-mw-app')">IB - MW APP (MB+)</button>
+<button class="tab" onclick="switchTab('ib-overview')">IB Overview</button>
+<button class="tab" onclick="switchTab('overall-mw')">Overall MW</button>
+<button class="tab" onclick="switchTab('demo-comp')">Demo Competition 2026</button>
+</div>
+<!-- Content Container -->
+<div class="content">
+<!-- EXECUTIVE SUMMARY TAB -->
+<div class="tab-content active" id="exec-summary">
+<h3 class="section-title">Defect Summary</h3>
+<table>
+<thead>
+<tr>
+<th style="width: 40px;">#</th>
+<th>Defect</th>
+<th>Description</th>
+<th>Example from File</th>
+<th>Marketing Benchmark / Rule</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Clicks with Zero Impressions</strong></td>
+<td>Ad clicks recorded without any impressions.</td>
+<td>Afghanistan: Impressions = 0, Clicks = 250</td>
+<td>Clicks should never exceed impressions. Impressions must be &gt; 0 if clicks exist.</td>
+<td>We cannot trust the ad performance numbers for this country.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Sessions Greater Than Clicks</strong></td>
+<td>More website visits than recorded ad clicks.</td>
+<td>Albania: Sessions = 29, Clicks = 14</td>
+<td>Sessions should generally be equal to or lower than clicks from the same source.</td>
+<td>Website traffic reporting may be inaccurate.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Sessions with Zero Clicks</strong></td>
+<td>Website visits recorded without marketing clicks.</td>
+<td>Bhutan: Sessions = 1, Clicks = 0</td>
+<td>Marketing traffic should normally have corresponding clicks.</td>
+<td>We cannot accurately measure which campaigns brought visitors.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Leads with Zero Spend</strong></td>
+<td>Leads generated without any recorded marketing cost.</td>
+<td>Afghanistan: Spend = $0, Leads = 273</td>
+<td>Every paid lead should have associated spend.</td>
+<td>Lead cost (CPL) cannot be trusted.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Live Accounts with Zero Spend</strong></td>
+<td>Customer accounts created with no marketing spend recorded.</td>
+<td>Afghanistan: Live Accounts = 200, Spend = $0</td>
+<td>Customer acquisition should have attributable cost.</td>
+<td>CPA appears artificially low or zero.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Funded Accounts with Zero Spend</strong></td>
+<td>Funded customers reported without spend.</td>
+<td>Afghanistan: Funded Accounts = 19, Spend = $0</td>
+<td>Funded accounts should have acquisition cost.</td>
+<td>CPFA is incorrect and cannot be used for budgeting.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>ROI Reported as Zero Despite Positive NMI</strong></td>
+<td>Positive money inflow but ROI shown as zero.</td>
+<td>NMI = 2,584.54, ROI = 0</td>
+<td>Positive returns should produce a positive ROI.</td>
+<td>Management may think campaigns are not generating value when they are.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Percentage Metrics Stored as Decimals</strong></td>
+<td>Percentages shown as decimals.</td>
+<td>LPV = 0.104, Bounce Rate = 0.347</td>
+<td>Marketing reports should display 10.4%, 34.7%, etc.</td>
+<td>Easy for management to misunderstand performance.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Unexplained Column "."</strong></td>
+<td>Report contains a column with no business meaning.</td>
+<td>Column name "."</td>
+<td>Every field should have a business definition.</td>
+<td>Creates confusion and reduces confidence in the report.</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Country-Level Funnel Distortion</strong></td>
+<td>Leads, Accounts and Funded Accounts aggregated by country.</td>
+<td>Multiple countries</td>
+<td>Funnel metrics should normally be analyzed by campaign/source.</td>
+<td>Conversion rates may be misleading and lead to wrong decisions.</td>
+</tr>
+</tbody>
+</table>
+<div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
+<div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
+<div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">Marketing Dashboard Defect Summary</div>
+<div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
+<svg style="width:100%; height:auto; font-family:Arial, sans-serif;" viewbox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
+<line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="150" x2="150" y1="20" y2="350"></line>
+<line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="370" x2="370" y1="20" y2="350"></line>
+<line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="590" x2="590" y1="20" y2="350"></line>
+<line stroke="#374151" stroke-dasharray="4,4" stroke-width="1" x1="810" x2="810" y1="20" y2="350"></line>
+<text fill="#9ca3af" font-size="14" text-anchor="middle" x="150" y="372">0</text>
+<text fill="#9ca3af" font-size="14" text-anchor="middle" x="370" y="372">2</text>
+<text fill="#9ca3af" font-size="14" text-anchor="middle" x="590" y="372">4</text>
+<text fill="#9ca3af" font-size="14" text-anchor="middle" x="810" y="372">6</text>
+<text fill="#e5e7eb" font-size="14" text-anchor="end" x="135" y="55">Funnel Logic Issues</text>
+<rect fill="#1e4080" height="50" rx="10" width="440" x="150" y="30"></rect>
+<text fill="#e5e7eb" font-size="14" text-anchor="end" x="135" y="125">Attribution Issues</text>
+<rect fill="#1e4080" height="50" rx="10" width="220" x="150" y="100"></rect>
+<text fill="#e5e7eb" font-size="14" text-anchor="end" x="135" y="195">Cost &amp; ROI Issues</text>
+<rect fill="#1e4080" height="50" rx="10" width="220" x="150" y="170"></rect>
+<text fill="#e5e7eb" font-size="14" text-anchor="end" x="135" y="265">Reporting Issues</text>
+<rect fill="#1e4080" height="50" rx="10" width="110" x="150" y="240"></rect>
+<text fill="#e5e7eb" font-size="14" text-anchor="end" x="135" y="335">Data Governance I...</text>
+<rect fill="#1e4080" height="50" rx="10" width="110" x="150" y="310"></rect>
+</svg>
+</div>
+<div style="flex:1.5;">
+<h3 class="section-title" style="margin-top:0;">Recommendation</h3>
+<table>
+<thead>
+<tr>
+<th style="width: 40px;">#</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Review and fix the countries showing impossible marketing data (such as Clicks without Impressions and Leads without Spend) before using these metrics for performance evaluation or budget decisions.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Implement automated data validation checks to identify and prevent funnel, attribution, and ROI calculation issues before reports are shared with management.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- MW LEGACY TAB -->
+<div class="tab-content" id="mw-legacy"><h2 class="section-title">MW Legacy Campaign Performance</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">All P&amp;L Values = $0 (Data Missing)</strong></td>
+<td>CRITICAL: Total P&amp;L column shows $0 for all 22 dates. This is a "red column" issue - data pipeline not populating P&amp;L values. Without P&amp;L, ROI calculations are meaningless (all show 0%). Requires immediate data team investigation.</td>
+</tr>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">ROI Calculation Errors (Systematic)</strong></td>
+<td>All 22 dates show ROI calculation discrepancies. Power BI reports ROI 15-37% but calculation yields 0.0% due to P&amp;L = $0. Do NOT use ROI metrics for investment decisions until P&amp;L data is corrected.</td>
+</tr>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Strong Customer Quality (Reliable)</strong></td>
+<td>Average deposit size of $3,021 and 50% valid-to-funded conversion rate are reliable metrics. Volume data (leads, accounts, deposits) is accurate - only P&amp;L/ROI affected by data issue.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- MW APP (MB+) TAB -->
+<div class="tab-content" id="mw-app"><h2 class="section-title">MW APP (MB+) Campaign Performance</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">Funnel Logic Violations (Country-Level)</strong></td>
+<td>CRITICAL: 118 of 197 countries (60%) show impossible conversion rates where Accounts &gt; Leads or Funded &gt; Accounts. This indicates data aggregation or timing issues at country dimension. Stage-level data is clean (100/100).</td>
+</tr>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Stage-Level Data Clean</strong></td>
+<td>Valid/Invalid/Pending stage breakdown has perfect data quality. Use stage-level metrics (not country-level) for conversion rate analysis.</td>
+</tr>
+<tr style="background: #dbeafe;">
+<td style="text-align: center; font-size: 20px;">ℹ️</td>
+<td><strong style="color: #1e3a8a;">UAE Performance Validated</strong></td>
+<td>UAE deposit totals and rankings are correct. Geographic concentration at 52% is accurate. Use for strategic geography decisions.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- MB+ PERIOD OVERVIEW TAB -->
+<div class="tab-content" id="mb-plus"><h2 class="section-title">MB+ Period Overview</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Clean User-Level Data</strong></td>
+<td>256 user records with complete deposit and platform tracking. No negative values or critical data quality issues detected. This dataset provides granular insights into customer acquisition sources.</td>
+</tr>
+<tr style="background: #dbeafe;">
+<td style="text-align: center; font-size: 20px;">ℹ️</td>
+<td><strong style="color: #1e3a8a;">Marketing Platform Data Available</strong></td>
+<td>This report includes Marketing Platform dimension (Organic, Direct &amp; Others, Direct Buys, Google Search, etc.) which was missing from other campaigns. Enables channel performance analysis.</td>
+</tr>
+<tr style="background: #fef3c7;">
+<td style="text-align: center; font-size: 20px;">⚠️</td>
+<td><strong style="color: #78350f;">Minor Missing Values</strong></td>
+<td>Small number of missing values in Country, Account Type fields. Does not impact overall analysis but should be addressed in source system data entry.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- IB - MW LEGACY TAB -->
+<div class="tab-content" id="ib-mw-legacy"><h2 class="section-title">IB - MW Legacy (Introducing Broker Campaign)</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #fee2e2;">
+<td style="text-align: center; font-size: 20px;">🔴</td>
+<td><strong style="color: #991b1b;">ROI Calculation Error Detected</strong></td>
+<td>ROI shows 24.25% in Power BI but calculation yields 0.00% based on P&amp;L ($0) / Spent ($6,966). Same systematic error as MW Legacy campaign - requires validation.</td>
+</tr>
+<tr style="background: #fef3c7;">
+<td style="text-align: center; font-size: 20px;">⚠️</td>
+<td><strong style="color: #78350f;">Turkey Dominates Deposits</strong></td>
+<td>Turkey represents 83% of total deposits ($163,768) from only 6 leads. This exceptional concentration warrants verification - could indicate high-value IB partners or data anomaly.</td>
+</tr>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Deposits Exceed Spend</strong></td>
+<td>Total deposits of $197,081 vs spend of $6,966 shows strong capital attraction capability, even with zero funded accounts reported. IB model generating substantial deposits through broker networks.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- IB - MW APP (MB+) TAB -->
+<div class="tab-content" id="ib-mw-app"><h2 class="section-title">IB - MW APP (MB+) - Introducing Broker Mobile Campaign</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Clean Data Quality</strong></td>
+<td>No critical data quality issues detected. All calculations validated correctly. Data structure is complete and consistent.</td>
+</tr>
+<tr style="background: #fef3c7;">
+<td style="text-align: center; font-size: 20px;">⚠️</td>
+<td><strong style="color: #78350f;">Very Limited Activity</strong></td>
+<td>Only 7 leads generated, 2 countries with deposits (Jordan, India). 92% of countries show $0 activity. This appears to be early-stage campaign or pilot phase.</td>
+</tr>
+<tr style="background: #dbeafe;">
+<td style="text-align: center; font-size: 20px;">ℹ️</td>
+<td><strong style="color: #1e3a8a;">Jordan Focus</strong></td>
+<td>Jordan represents 98% of deposits ($6,198 of $6,299 total). Concentrated activity suggests targeted IB partnership or specific market test.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- IB OVERVIEW TAB -->
+<div class="tab-content" id="ib-overview"><h2 class="section-title">IB Overview - Complete Introducing Broker Program</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Complete IB Program Data</strong></td>
+<td>Comprehensive view of entire IB program with 97 total IBs tracked through complete journey from initial contact to funded clients. Data quality excellent (95/100).</td>
+</tr>
+<tr style="background: #dbeafe;">
+<td style="text-align: center; font-size: 20px;">ℹ️</td>
+<td><strong style="color: #1e3a8a;">ROI at 2,497%</strong></td>
+<td>IB Overview shows ROI of 2,497% for IB Clients, indicating strong profitability from IB-sourced customer deposits. This leverage effect demonstrates value of IB partnership model.</td>
+</tr>
+<tr style="background: #fef3c7;">
+<td style="text-align: center; font-size: 20px;">⚠️</td>
+<td><strong style="color: #78350f;">Conversion Drop-Off</strong></td>
+<td>Significant drop from 97 total IBs → 39 signed (40%) → 11 with clients (28%) → 3 with funded clients (27%). Opportunity to improve IB activation and client acquisition rates.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- OVERALL MW TAB -->
+<div class="tab-content" id="overall-mw"><h2 class="section-title">Overall MW - Combined MW Campaigns</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Clean Overall Data Quality</strong></td>
+<td>92/100 QA score with no critical issues. Overall MW combines Legacy + APP campaigns showing aggregated performance across MW product line. Minor funnel inconsistencies (7) much lower than individual campaigns.</td>
+</tr>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Strong Performance Metrics</strong></td>
+<td>$2.07M deposits from $79.9K spend shows 25.9x deposit leverage. 342 funded accounts with $6,046 average deposit indicates high customer value. UAE driving 76% of deposits ($1.58M).</td>
+</tr>
+<tr style="background: #fef3c7;">
+<td style="text-align: center; font-size: 20px;">⚠️</td>
+<td><strong style="color: #78350f;">Minor Data Gaps</strong></td>
+<td>3 missing values in non-critical fields and 7 minor funnel inconsistencies detected. These don't impact overall portfolio metrics but should be reviewed in source data.</td>
+</tr>
+</tbody>
+</table></div>
+<!-- DEMO COMPETITION 2026 TAB -->
+<div class="tab-content" id="demo-comp"><h2 class="section-title">Demo Competition 2026 - Lead Generation Campaign</h2>
+        <h3 class="section-title">Quality Assurance Findings</h3>
+        <table style="margin-bottom: 30px;">
+<thead>
+<tr>
+<th style="width: 40px;"></th>
+<th>Finding</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">⭐</td>
+<td><strong style="color: #065f46;">Complete Funnel Tracking - Perfect Score</strong></td>
+<td>All funnel stages tracked: Impressions → Clicks → Sessions → Real Visitors → Demo Accounts → Live Accounts. Has LPV % and Bounce Rate data. 100/100 QA score.</td>
+</tr>
+<tr style="background: #d1fae5;">
+<td style="text-align: center; font-size: 20px;">✅</td>
+<td><strong style="color: #065f46;">Excellent Cost Efficiency</strong></td>
+<td>CPC of $0.25 and CPM of $2.68 are best across all campaigns. Cost per Demo Account at $15.76 shows highly efficient lead generation.</td>
+</tr>
+<tr style="background: #dbeafe;">
+<td style="text-align: center; font-size: 20px;">ℹ️</td>
+<td><strong style="color: #1e3a8a;">Different Campaign Model</strong></td>
+<td>This is a lead generation / demo account campaign, not focused on deposits or funded accounts. Success metrics are Demo Accounts created and Live Account conversions, not CPFA or ROI.</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 
-            <h3 class="section-title">Defect Summary</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40px;">#</th>
-                        <th>Defect</th>
-                        <th>Description</th>
-                        <th>Example from File</th>
-                        <th>Marketing Benchmark / Rule</th>
-                        <th>Impact</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>Clicks with Zero Impressions</strong></td>
-                        <td>Ad clicks recorded without any impressions.</td>
-                        <td>Afghanistan: Impressions = 0, Clicks = 250</td>
-                        <td>Clicks should never exceed impressions. Impressions must be &gt; 0 if clicks exist.</td>
-                        <td>We cannot trust the ad performance numbers for this country.</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>Sessions Greater Than Clicks</strong></td>
-                        <td>More website visits than recorded ad clicks.</td>
-                        <td>Albania: Sessions = 29, Clicks = 14</td>
-                        <td>Sessions should generally be equal to or lower than clicks from the same source.</td>
-                        <td>Website traffic reporting may be inaccurate.</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>Sessions with Zero Clicks</strong></td>
-                        <td>Website visits recorded without marketing clicks.</td>
-                        <td>Bhutan: Sessions = 1, Clicks = 0</td>
-                        <td>Marketing traffic should normally have corresponding clicks.</td>
-                        <td>We cannot accurately measure which campaigns brought visitors.</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>Leads with Zero Spend</strong></td>
-                        <td>Leads generated without any recorded marketing cost.</td>
-                        <td>Afghanistan: Spend = $0, Leads = 273</td>
-                        <td>Every paid lead should have associated spend.</td>
-                        <td>Lead cost (CPL) cannot be trusted.</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>Live Accounts with Zero Spend</strong></td>
-                        <td>Customer accounts created with no marketing spend recorded.</td>
-                        <td>Afghanistan: Live Accounts = 200, Spend = $0</td>
-                        <td>Customer acquisition should have attributable cost.</td>
-                        <td>CPA appears artificially low or zero.</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td><strong>Funded Accounts with Zero Spend</strong></td>
-                        <td>Funded customers reported without spend.</td>
-                        <td>Afghanistan: Funded Accounts = 19, Spend = $0</td>
-                        <td>Funded accounts should have acquisition cost.</td>
-                        <td>CPFA is incorrect and cannot be used for budgeting.</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td><strong>ROI Reported as Zero Despite Positive NMI</strong></td>
-                        <td>Positive money inflow but ROI shown as zero.</td>
-                        <td>NMI = 2,584.54, ROI = 0</td>
-                        <td>Positive returns should produce a positive ROI.</td>
-                        <td>Management may think campaigns are not generating value when they are.</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td><strong>Percentage Metrics Stored as Decimals</strong></td>
-                        <td>Percentages shown as decimals.</td>
-                        <td>LPV = 0.104, Bounce Rate = 0.347</td>
-                        <td>Marketing reports should display 10.4%, 34.7%, etc.</td>
-                        <td>Easy for management to misunderstand performance.</td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td><strong>Unexplained Column "."</strong></td>
-                        <td>Report contains a column with no business meaning.</td>
-                        <td>Column name "."</td>
-                        <td>Every field should have a business definition.</td>
-                        <td>Creates confusion and reduces confidence in the report.</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td><strong>Country-Level Funnel Distortion</strong></td>
-                        <td>Leads, Accounts and Funded Accounts aggregated by country.</td>
-                        <td>Multiple countries</td>
-                        <td>Funnel metrics should normally be analyzed by campaign/source.</td>
-                        <td>Conversion rates may be misleading and lead to wrong decisions.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div style="display:flex; gap:20px; align-items:flex-start; margin-top:10px;">
-                <div style="flex:0.8; background:#000; border-radius:8px; padding:25px 30px 18px 30px;">
-                    <div style="color:#fff; font-size:18px; font-weight:bold; margin-bottom:4px;">Marketing Dashboard Defect Summary</div>
-                    <div style="color:#9ca3af; font-size:13px; margin-bottom:16px;">Number of identified defects by category.</div>
-                    <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto; font-family:Arial, sans-serif;">
-                        <line x1="150" y1="20" x2="150" y2="350" stroke="#374151" stroke-width="1" stroke-dasharray="4,4"/>
-                        <line x1="370" y1="20" x2="370" y2="350" stroke="#374151" stroke-width="1" stroke-dasharray="4,4"/>
-                        <line x1="590" y1="20" x2="590" y2="350" stroke="#374151" stroke-width="1" stroke-dasharray="4,4"/>
-                        <line x1="810" y1="20" x2="810" y2="350" stroke="#374151" stroke-width="1" stroke-dasharray="4,4"/>
-
-                        <text x="150" y="372" fill="#9ca3af" font-size="14" text-anchor="middle">0</text>
-                        <text x="370" y="372" fill="#9ca3af" font-size="14" text-anchor="middle">2</text>
-                        <text x="590" y="372" fill="#9ca3af" font-size="14" text-anchor="middle">4</text>
-                        <text x="810" y="372" fill="#9ca3af" font-size="14" text-anchor="middle">6</text>
-
-                        <text x="135" y="55" fill="#e5e7eb" font-size="14" text-anchor="end">Funnel Logic Issues</text>
-                        <rect x="150" y="30" width="440" height="50" rx="10" fill="#1e4080"/>
-
-                        <text x="135" y="125" fill="#e5e7eb" font-size="14" text-anchor="end">Attribution Issues</text>
-                        <rect x="150" y="100" width="220" height="50" rx="10" fill="#1e4080"/>
-
-                        <text x="135" y="195" fill="#e5e7eb" font-size="14" text-anchor="end">Cost &amp; ROI Issues</text>
-                        <rect x="150" y="170" width="220" height="50" rx="10" fill="#1e4080"/>
-
-                        <text x="135" y="265" fill="#e5e7eb" font-size="14" text-anchor="end">Reporting Issues</text>
-                        <rect x="150" y="240" width="110" height="50" rx="10" fill="#1e4080"/>
-
-                        <text x="135" y="335" fill="#e5e7eb" font-size="14" text-anchor="end">Data Governance I...</text>
-                        <rect x="150" y="310" width="110" height="50" rx="10" fill="#1e4080"/>
-                    </svg>
-                </div>
-
-                <div style="flex:1.5;">
-                    <h3 class="section-title" style="margin-top:0;">Recommendation</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 40px;">#</th>
-                                <th>Recommendation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Review and fix the countries showing impossible marketing data (such as Clicks without Impressions and Leads without Spend) before using these metrics for performance evaluation or budget decisions.</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Implement automated data validation checks to identify and prevent funnel, attribution, and ROI calculation issues before reports are shared with management.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- MW LEGACY TAB -->
-        <div id="mw-legacy" class="tab-content">
-            <h2 class="section-title">MW Legacy Campaign Performance</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 70/100 (Needs Attention) | <strong>Critical Issues:</strong> 2 | 
-                <strong>Data Reliability:</strong> ⚠️ P&L data missing - ROI unreliable
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #fee2e2;">
-                        <td style="text-align: center; font-size: 20px;">🔴</td>
-                        <td><strong style="color: #991b1b;">All P&L Values = $0 (Data Missing)</strong></td>
-                        <td>CRITICAL: Total P&L column shows $0 for all 22 dates. This is a "red column" issue - data pipeline not populating P&L values. Without P&L, ROI calculations are meaningless (all show 0%). Requires immediate data team investigation.</td>
-                    </tr>
-                    <tr style="background: #fee2e2;">
-                        <td style="text-align: center; font-size: 20px;">🔴</td>
-                        <td><strong style="color: #991b1b;">ROI Calculation Errors (Systematic)</strong></td>
-                        <td>All 22 dates show ROI calculation discrepancies. Power BI reports ROI 15-37% but calculation yields 0.0% due to P&L = $0. Do NOT use ROI metrics for investment decisions until P&L data is corrected.</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Strong Customer Quality (Reliable)</strong></td>
-                        <td>Average deposit size of $3,021 and 50% valid-to-funded conversion rate are reliable metrics. Volume data (leads, accounts, deposits) is accurate - only P&L/ROI affected by data issue.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>CTR (Click-Through Rate)</strong></td>
-                        <td class="number">0.31%</td>
-                        <td>Clicks / Impressions × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPC (Cost per Click)</strong></td>
-                        <td class="number">$1.96</td>
-                        <td>Spent / Clicks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPM (Cost per 1,000 Impressions)</strong></td>
-                        <td class="number">$6.17</td>
-                        <td>(Spent / Impressions) × 1,000</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPL (Cost per Lead)</strong></td>
-                        <td class="number">$54.16</td>
-                        <td>Spent / Leads</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPA (Cost per Account)</strong></td>
-                        <td class="number">$59.38</td>
-                        <td>Spent / Accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPFA (Cost per Funded Account)</strong></td>
-                        <td class="number">$138.81</td>
-                        <td>Spent / Funded Accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ROI (Return on Investment)</strong></td>
-                        <td class="number">0.0%</td>
-                        <td>(Total P&L / Spent) × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lead to Account %</strong></td>
-                        <td class="number">91.2%</td>
-                        <td>Accounts / Leads × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Account to Funded %</strong></td>
-                        <td class="number">42.8%</td>
-                        <td>Funded / Accounts × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Average Deposit Size</strong></td>
-                        <td class="number">$3,021.43</td>
-                        <td>Total Deposits / Funded Accounts</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Full Funnel Breakdown -->
-            <h3 class="section-title">Complete Conversion Funnel (Chairman's Framework)</h3>
-            <div class="note">
-                <strong>Note:</strong> LPV, Bounce Rate, and Real Visitors are estimated using Chairman's benchmark assumptions 
-                (LPV = 90% of Clicks, Bounce = 70%) as this data is not currently tracked in Power BI.
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Funnel Stage</th>
-                        <th class="number">Volume</th>
-                        <th class="number">Conversion Rate</th>
-                        <th class="number">Cost Metric</th>
-                        <th>Formula/Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>1. Impressions</strong></td>
-                        <td class="number">21,111,033</td>
-                        <td class="number">-</td>
-                        <td class="number">$6.17 CPM</td>
-                        <td>Total ad impressions served</td>
-                    </tr>
-                    <tr>
-                        <td><strong>2. Clicks</strong></td>
-                        <td class="number">66,408</td>
-                        <td class="number">0.31% CTR</td>
-                        <td class="number">$1.96 CPC</td>
-                        <td>CTR = Clicks / Impressions × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3. Landing Page Views (LPV)</strong></td>
-                        <td class="number">59,767</td>
-                        <td class="number">90% of Clicks</td>
-                        <td class="number">-</td>
-                        <td><em>Estimated using 90% benchmark</em></td>
-                    </tr>
-                    <tr>
-                        <td><strong>4. Real Visitors (After Bounce)</strong></td>
-                        <td class="number">17,930</td>
-                        <td class="number">30% (70% bounce)</td>
-                        <td class="number">-</td>
-                        <td><em>Real = LPV × (1 - Bounce Rate)</em></td>
-                    </tr>
-                    <tr>
-                        <td><strong>5. Leads (Form Fills)</strong></td>
-                        <td class="number">2,405</td>
-                        <td class="number">13.4% of Visitors</td>
-                        <td class="number">$54.16 CPL</td>
-                        <td>People who started application</td>
-                    </tr>
-                    <tr>
-                        <td><strong>6. Accounts (Completed)</strong></td>
-                        <td class="number">2,194</td>
-                        <td class="number">91.2% of Leads</td>
-                        <td class="number">$59.38 CPA</td>
-                        <td>Completed full account opening</td>
-                    </tr>
-                    <tr>
-                        <td><strong>7. Funded Accounts</strong></td>
-                        <td class="number">938</td>
-                        <td class="number">42.8% of Accounts</td>
-                        <td class="number">$138.81 CPFA</td>
-                        <td>Made first deposit</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- ROI Calculation Breakdown -->
-            <h3 class="section-title">ROI Calculation Breakdown</h3>
-            <table class="calc-table" style="max-width: 600px;">
-                <tbody>
-                    <tr>
-                        <td><strong>Total Customer Deposits</strong></td>
-                        <td class="number">$2,834,103.46</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Marketing Spend</strong></td>
-                        <td class="number">$130,226.32</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gross Profit (P&L)</strong></td>
-                        <td class="number">$0.00</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="padding: 4px;"></td>
-                    </tr>
-                    <tr>
-                        <td><strong>ROI = (P&L ÷ Spent) × 100</strong></td>
-                        <td class="number" style="background: #1e1b4b; color: white;">0.0%</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="note">
-                <strong>⚠️ Data Quality Issue:</strong> P&L shows $0 which yields 0% ROI. This requires verification with finance team. 
-                The actual ROI shown in Power BI (21.8%) does not match this calculation and appears to be using incorrect formula.
-            </div>
-            
-            <!-- Stage Performance -->
-            <h3 class="section-title">Stage Performance Breakdown</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stage</th>
-                        <th class="number">Leads</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Accounts</th>
-                        <th class="number">Funded</th>
-                        <th class="number">Conversion %</th>
-                        <th class="number">Deposits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Valid</strong></td>
-                        <td class="number">1,842</td>
-                        <td class="number">84.0%</td>
-                        <td class="number">1,842</td>
-                        <td class="number">921</td>
-                        <td class="number">50.0%</td>
-                        <td class="number">$2,816,368</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Invalid</strong></td>
-                        <td class="number">141</td>
-                        <td class="number">6.4%</td>
-                        <td class="number">141</td>
-                        <td class="number">10</td>
-                        <td class="number">7.1%</td>
-                        <td class="number">$4,086</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pending</strong></td>
-                        <td class="number">160</td>
-                        <td class="number">7.3%</td>
-                        <td class="number">160</td>
-                        <td class="number">6</td>
-                        <td class="number">3.8%</td>
-                        <td class="number">$13,399</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Not Uploaded</strong></td>
-                        <td class="number">51</td>
-                        <td class="number">2.3%</td>
-                        <td class="number">51</td>
-                        <td class="number">1</td>
-                        <td class="number">2.0%</td>
-                        <td class="number">$250</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">2,194</td>
-                        <td class="number">100.0%</td>
-                        <td class="number">2,194</td>
-                        <td class="number">938</td>
-                        <td class="number">42.8%</td>
-                        <td class="number">$2,834,103</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Metrics Grid -->
-            <h3 class="section-title">Key Efficiency Metrics</h3>
-            <div class="metric-grid">
-                <div class="metric-cell header">Spent</div>
-                <div class="metric-cell header">Clicks</div>
-                <div class="metric-cell header">Leads</div>
-                <div class="metric-cell header">Funded</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">$130K</div>
-                    <div class="metric-target">June 2026 MTD</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">66,408</div>
-                    <div class="metric-target">CTR: 0.31%</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">2,405</div>
-                    <div class="metric-target">CPL: $54.16</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">938</div>
-                    <div class="metric-target">CPFA: $138.81</div>
-                </div>
-                
-                <div class="metric-cell header">CPC</div>
-                <div class="metric-cell header">CPM</div>
-                <div class="metric-cell header">Deposits</div>
-                <div class="metric-cell header">Avg Deposit</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">$1.96</div>
-                    <div class="metric-target">Target: $0.50</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$6.17</div>
-                    <div class="metric-target">Target: $15.00</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$2.83M</div>
-                    <div class="metric-target">From 938 accounts</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$3,021</div>
-                    <div class="metric-target">Target: $5,000</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- MW APP (MB+) TAB -->
-        <div id="mw-app" class="tab-content">
-            <h2 class="section-title">MW APP (MB+) Campaign Performance</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 80/100 (Good with Concerns) | <strong>Critical Issues:</strong> 1 (Funnel logic) | 
-                <strong>Data Reliability:</strong> Stage-level data clean, country-level needs validation
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #fee2e2;">
-                        <td style="text-align: center; font-size: 20px;">🔴</td>
-                        <td><strong style="color: #991b1b;">Funnel Logic Violations (Country-Level)</strong></td>
-                        <td>CRITICAL: 118 of 197 countries (60%) show impossible conversion rates where Accounts > Leads or Funded > Accounts. This indicates data aggregation or timing issues at country dimension. Stage-level data is clean (100/100).</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Stage-Level Data Clean</strong></td>
-                        <td>Valid/Invalid/Pending stage breakdown has perfect data quality. Use stage-level metrics (not country-level) for conversion rate analysis.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td style="text-align: center; font-size: 20px;">ℹ️</td>
-                        <td><strong style="color: #1e3a8a;">UAE Performance Validated</strong></td>
-                        <td>UAE deposit totals and rankings are correct. Geographic concentration at 52% is accurate. Use for strategic geography decisions.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Total Leads</strong></td>
-                        <td class="number">784</td>
-                        <td>People who started application</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Accounts</strong></td>
-                        <td class="number">784</td>
-                        <td>Completed account opening</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Funded Accounts</strong></td>
-                        <td class="number">128</td>
-                        <td>Made first deposit</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lead to Account %</strong></td>
-                        <td class="number">100.0%</td>
-                        <td>Accounts / Leads × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Account to Funded %</strong></td>
-                        <td class="number">16.3%</td>
-                        <td>Funded / Accounts × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits</strong></td>
-                        <td class="number">$140,936</td>
-                        <td>Sum of all customer deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Average Deposit Size</strong></td>
-                        <td class="number">$1,101.22</td>
-                        <td>Total Deposits / Funded Accounts</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="note">
-                <strong>Data Limitation:</strong> MW APP (MB+) export does not include Spent $ data, preventing calculation of 
-                CPA, CPFA, ROI, CPC, CPM. Need to re-export from Power BI with cost metrics included.
-            </div>
-            
-            <!-- Stage Performance -->
-            <h3 class="section-title">Stage Performance Breakdown</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stage</th>
-                        <th class="number">Leads</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Accounts</th>
-                        <th class="number">Funded</th>
-                        <th class="number">Conversion %</th>
-                        <th class="number">Deposits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Valid</strong></td>
-                        <td class="number">414</td>
-                        <td class="number">52.8%</td>
-                        <td class="number">414</td>
-                        <td class="number">105</td>
-                        <td class="number">25.4%</td>
-                        <td class="number">$136,110</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Invalid</strong></td>
-                        <td class="number">174</td>
-                        <td class="number">22.2%</td>
-                        <td class="number">174</td>
-                        <td class="number">15</td>
-                        <td class="number">8.6%</td>
-                        <td class="number">$1,826</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pending</strong></td>
-                        <td class="number">189</td>
-                        <td class="number">24.1%</td>
-                        <td class="number">189</td>
-                        <td class="number">8</td>
-                        <td class="number">4.2%</td>
-                        <td class="number">$3,000</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Not Uploaded</strong></td>
-                        <td class="number">7</td>
-                        <td class="number">0.9%</td>
-                        <td class="number">7</td>
-                        <td class="number">0</td>
-                        <td class="number">0.0%</td>
-                        <td class="number">$0</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">784</td>
-                        <td class="number">100.0%</td>
-                        <td class="number">784</td>
-                        <td class="number">128</td>
-                        <td class="number">16.3%</td>
-                        <td class="number">$140,936</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Top Countries -->
-            <h3 class="section-title">Top 5 Countries by Deposits</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Country</th>
-                        <th class="number">Funded Accounts</th>
-                        <th class="number">Deposits</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Avg Deposit Size</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>🇦🇪 United Arab Emirates</strong></td>
-                        <td class="number">22</td>
-                        <td class="number">$73,543</td>
-                        <td class="number">52.2%</td>
-                        <td class="number">$3,343</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>🇵🇰 Pakistan</strong></td>
-                        <td class="number">4</td>
-                        <td class="number">$12,684</td>
-                        <td class="number">9.0%</td>
-                        <td class="number">$3,171</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>🇨🇦 Canada</strong></td>
-                        <td class="number">23</td>
-                        <td class="number">$12,449</td>
-                        <td class="number">8.8%</td>
-                        <td class="number">$541</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td class="number">11</td>
-                        <td class="number">$11,828</td>
-                        <td class="number">8.4%</td>
-                        <td class="number">$1,075</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>Other Markets (Combined)</strong></td>
-                        <td class="number">68</td>
-                        <td class="number">$30,432</td>
-                        <td class="number">21.6%</td>
-                        <td class="number">$448</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- MB+ PERIOD OVERVIEW TAB -->
-        <div id="mb-plus" class="tab-content">
-            <h2 class="section-title">MB+ Period Overview</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 97/100 (Excellent) | <strong>Critical Issues:</strong> 0 | 
-                <strong>Data Reliability:</strong> High - Ready for strategic decisions | <strong>Records:</strong> 256 users
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Clean User-Level Data</strong></td>
-                        <td>256 user records with complete deposit and platform tracking. No negative values or critical data quality issues detected. This dataset provides granular insights into customer acquisition sources.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td style="text-align: center; font-size: 20px;">ℹ️</td>
-                        <td><strong style="color: #1e3a8a;">Marketing Platform Data Available</strong></td>
-                        <td>This report includes Marketing Platform dimension (Organic, Direct & Others, Direct Buys, Google Search, etc.) which was missing from other campaigns. Enables channel performance analysis.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td style="text-align: center; font-size: 20px;">⚠️</td>
-                        <td><strong style="color: #78350f;">Minor Missing Values</strong></td>
-                        <td>Small number of missing values in Country, Account Type fields. Does not impact overall analysis but should be addressed in source system data entry.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Total User Accounts</strong></td>
-                        <td class="number">256</td>
-                        <td>Unique users in MB+ period</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits</strong></td>
-                        <td class="number">$208,402</td>
-                        <td>Sum of all customer deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Average Deposit per User</strong></td>
-                        <td class="number">$817</td>
-                        <td>Total Deposits / Total Users</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Metric Value</strong></td>
-                        <td class="number">508</td>
-                        <td>Sum of metric values across all users</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance by Country -->
-            <h3 class="section-title">Performance by Country</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Country</th>
-                        <th class="number">Users</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Avg Deposit per User</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>🇦🇪 UAE</strong></td>
-                        <td class="number">77</td>
-                        <td class="number">$75,743</td>
-                        <td class="number">36.3%</td>
-                        <td class="number">$984</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>🇨🇦 Canada</strong></td>
-                        <td class="number">58</td>
-                        <td class="number">$12,449</td>
-                        <td class="number">6.0%</td>
-                        <td class="number">$215</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td class="number">75</td>
-                        <td class="number">$11,928</td>
-                        <td class="number">5.7%</td>
-                        <td class="number">$159</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>🇪🇸 Spain</strong></td>
-                        <td class="number">17</td>
-                        <td class="number">$2,761</td>
-                        <td class="number">1.3%</td>
-                        <td class="number">$162</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>🇫🇷 France</strong></td>
-                        <td class="number">14</td>
-                        <td class="number">$1,093</td>
-                        <td class="number">0.5%</td>
-                        <td class="number">$78</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><strong>Other Countries</strong></td>
-                        <td class="number">15</td>
-                        <td class="number">$104,428</td>
-                        <td class="number">50.2%</td>
-                        <td class="number">$6,962</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td></td>
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">256</td>
-                        <td class="number">$208,402</td>
-                        <td class="number">100.0%</td>
-                        <td class="number">$817</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance by Marketing Platform -->
-            <h3 class="section-title">Performance by Marketing Platform (Channel)</h3>
-            <div class="note">
-                <strong>Key Insight:</strong> This is the first report with Marketing Platform/Channel data. 
-                Use this to understand which acquisition channels drive best results.
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Marketing Platform</th>
-                        <th class="number">Users</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Avg Deposit per User</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>Organic</strong></td>
-                        <td class="number">68</td>
-                        <td class="number">$63,297</td>
-                        <td class="number">30.4%</td>
-                        <td class="number">$931</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>Direct & Others</strong></td>
-                        <td class="number">121</td>
-                        <td class="number">$36,178</td>
-                        <td class="number">17.4%</td>
-                        <td class="number">$299</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>Direct Buys</strong></td>
-                        <td class="number">48</td>
-                        <td class="number">$3,015</td>
-                        <td class="number">1.4%</td>
-                        <td class="number">$63</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>Website</strong></td>
-                        <td class="number">12</td>
-                        <td class="number">$1,712</td>
-                        <td class="number">0.8%</td>
-                        <td class="number">$143</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>Google Search</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">$104,200</td>
-                        <td class="number">50.0%</td>
-                        <td class="number">$52,100</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td><strong>Google Ads</strong></td>
-                        <td class="number">1</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                        <td class="number">$0</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td><strong>Facebook & Instagram</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                        <td class="number">$0</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><strong>Unknown/Missing</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">-</td>
-                        <td class="number">-</td>
-                        <td class="number">-</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Summary Metrics Grid -->
-            <h3 class="section-title">Summary Metrics</h3>
-            <div class="metric-grid">
-                <div class="metric-cell header">Total Users</div>
-                <div class="metric-cell header">Total Deposits</div>
-                <div class="metric-cell header">Avg Deposit</div>
-                <div class="metric-cell header">Top Country</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">256</div>
-                    <div class="metric-target">June 2026 period</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$208K</div>
-                    <div class="metric-target">Customer deposits</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$817</div>
-                    <div class="metric-target">Per user average</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">UAE</div>
-                    <div class="metric-target">36% of deposits</div>
-                </div>
-                
-                <div class="metric-cell header">Top Platform</div>
-                <div class="metric-cell header">Organic Users</div>
-                <div class="metric-cell header">Direct Users</div>
-                <div class="metric-cell header">QA Score</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">Organic</div>
-                    <div class="metric-target">$63K (30%)</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">68</div>
-                    <div class="metric-target">$931 avg deposit</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">121</div>
-                    <div class="metric-target">$299 avg deposit</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">97/100</div>
-                    <div class="metric-target">Excellent</div>
-                </div>
-            </div>
-            
-            <!-- Channel Performance Insights -->
-            <h3 class="section-title">Marketing Platform Performance Analysis</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Platform</th>
-                        <th>Performance Summary</th>
-                        <th>Observation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td><strong>Organic</strong></td>
-                        <td>
-                            • 68 users, $63,297 deposits<br>
-                            • $931 average deposit (highest among volume channels)<br>
-                            • 30% of total deposit value
-                        </td>
-                        <td style="color: #065f46;"><strong>Top performer by quality and volume.</strong> Organic traffic converting well with high-value customers.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td><strong>Direct & Others</strong></td>
-                        <td>
-                            • 121 users (largest volume), $36,178 deposits<br>
-                            • $299 average deposit<br>
-                            • 17% of total deposit value
-                        </td>
-                        <td style="color: #1e3a8a;"><strong>High volume, lower value.</strong> Good for customer acquisition numbers but lower deposit sizes.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td><strong>Google Search</strong></td>
-                        <td>
-                            • 2 users only, $104,200 deposits<br>
-                            • $52,100 average deposit (exceptional)<br>
-                            • 50% of total deposit value
-                        </td>
-                        <td style="color: #78350f;"><strong>Small sample, very high value.</strong> Needs investigation - could be VIP customers or data anomaly. Recommend validating these records.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Direct Buys</strong></td>
-                        <td>
-                            • 48 users, $3,015 deposits<br>
-                            • $63 average deposit<br>
-                            • 1.4% of total deposit value
-                        </td>
-                        <td>Moderate volume, low value. Consider optimizing or reallocating budget.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Website, Google Ads, Social</strong></td>
-                        <td>
-                            • Combined: 15 users, $1,712 deposits<br>
-                            • Low volume and value
-                        </td>
-                        <td>Minimal contribution. Monitor for trends or consider pausing underperformers.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Country × Platform Matrix -->
-            <h3 class="section-title">Top Country & Platform Combinations</h3>
-            <div class="note">
-                <strong>Strategic Value:</strong> This cross-analysis shows which marketing platforms work best for which countries, 
-                enabling optimized budget allocation decisions.
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Country</th>
-                        <th>Top Platform</th>
-                        <th class="number">Users</th>
-                        <th class="number">Deposits</th>
-                        <th>Insight</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>🇦🇪 UAE</strong></td>
-                        <td>Organic</td>
-                        <td class="number">77</td>
-                        <td class="number">$75,743</td>
-                        <td>Organic dominates UAE market - strong brand presence</td>
-                    </tr>
-                    <tr>
-                        <td><strong>🇨🇦 Canada</strong></td>
-                        <td>Direct & Others</td>
-                        <td class="number">58</td>
-                        <td class="number">$12,449</td>
-                        <td>Direct traffic primary source for Canadian customers</td>
-                    </tr>
-                    <tr>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td>Mixed channels</td>
-                        <td class="number">75</td>
-                        <td class="number">$11,928</td>
-                        <td>Diversified channel mix, no single dominant platform</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- IB - MW LEGACY TAB -->
-        <div id="ib-mw-legacy" class="tab-content">
-            <h2 class="section-title">IB - MW Legacy (Introducing Broker Campaign)</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 82/100 (Good) | <strong>Critical Issues:</strong> 1 (ROI calculation) | 
-                <strong>Data Reliability:</strong> Moderate - Validate ROI before decisions
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #fee2e2;">
-                        <td style="text-align: center; font-size: 20px;">🔴</td>
-                        <td><strong style="color: #991b1b;">ROI Calculation Error Detected</strong></td>
-                        <td>ROI shows 24.25% in Power BI but calculation yields 0.00% based on P&L ($0) / Spent ($6,966). Same systematic error as MW Legacy campaign - requires validation.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td style="text-align: center; font-size: 20px;">⚠️</td>
-                        <td><strong style="color: #78350f;">Turkey Dominates Deposits</strong></td>
-                        <td>Turkey represents 83% of total deposits ($163,768) from only 6 leads. This exceptional concentration warrants verification - could indicate high-value IB partners or data anomaly.</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Deposits Exceed Spend</strong></td>
-                        <td>Total deposits of $197,081 vs spend of $6,966 shows strong capital attraction capability, even with zero funded accounts reported. IB model generating substantial deposits through broker networks.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>CTR (Click-Through Rate)</strong></td>
-                        <td class="number">0.68%</td>
-                        <td>Clicks / Impressions × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPC (Cost per Click)</strong></td>
-                        <td class="number">$32.25</td>
-                        <td>Spent / Clicks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPM (Cost per 1,000 Impressions)</strong></td>
-                        <td class="number">$220.15</td>
-                        <td>(Spent / Impressions) × 1,000</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPL (Cost per Lead)</strong></td>
-                        <td class="number">$77.40</td>
-                        <td>Spent / Leads</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Leads</strong></td>
-                        <td class="number">90</td>
-                        <td>Introducing Broker inquiries</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits (IB Network)</strong></td>
-                        <td class="number">$197,081</td>
-                        <td>Customer deposits through IB channel</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ROI (Calculated)</strong></td>
-                        <td class="number">0.0%</td>
-                        <td>(P&L / Spent) × 100 [Data shows P&L = $0]</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deposit to Spend Ratio</strong></td>
-                        <td class="number">28.3x</td>
-                        <td>Deposits / Spent ($197K / $7K)</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance by Country -->
-            <h3 class="section-title">Performance by Country (Top 10)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Country</th>
-                        <th class="number">Leads</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Avg Deposit per Lead</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>🇹🇷 Turkey</strong></td>
-                        <td class="number">6</td>
-                        <td class="number">$163,768</td>
-                        <td class="number">83.1%</td>
-                        <td class="number">$27,295</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>🇮🇶 Iraq</strong></td>
-                        <td class="number">1</td>
-                        <td class="number">$32,044</td>
-                        <td class="number">16.3%</td>
-                        <td class="number">$32,044</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>🇻🇳 Vietnam</strong></td>
-                        <td class="number">4</td>
-                        <td class="number">$999</td>
-                        <td class="number">0.5%</td>
-                        <td class="number">$250</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>🇧🇪 Belgium</strong></td>
-                        <td class="number">1</td>
-                        <td class="number">$270</td>
-                        <td class="number">0.1%</td>
-                        <td class="number">$270</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>🇨🇦 Canada</strong></td>
-                        <td class="number">5</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                        <td class="number">$0</td>
-                    </tr>
-                    <tr>
-                        <td>6-10</td>
-                        <td><strong>Other Countries</strong></td>
-                        <td class="number">73</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                        <td class="number">$0</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td></td>
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">90</td>
-                        <td class="number">$197,081</td>
-                        <td class="number">100.0%</td>
-                        <td class="number">$2,190</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- IB Model Performance -->
-            <h3 class="section-title">Introducing Broker (IB) Model Analysis</h3>
-            <div class="note">
-                <strong>IB Model Context:</strong> Introducing Brokers bring their own client networks. 
-                Deposits shown represent customer capital managed through IB partners, not direct retail customers.
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">IB Campaign</th>
-                        <th>Observation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Marketing Efficiency</strong></td>
-                        <td class="number">$77 CPL</td>
-                        <td>Higher than direct campaigns but targeting broker partners, not end customers</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Geographic Focus</strong></td>
-                        <td class="number">Turkey (83%)</td>
-                        <td>Highly concentrated in Turkish market - successful IB partnerships in this region</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Capital Attraction</strong></td>
-                        <td class="number">$197K deposits</td>
-                        <td>Strong deposit generation from small number of IB leads (90 total)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cost Efficiency</strong></td>
-                        <td class="number">$7K spent</td>
-                        <td>Low marketing spend generating substantial deposit volume through leverage effect of IB networks</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Summary Metrics Grid -->
-            <h3 class="section-title">Summary Metrics</h3>
-            <div class="metric-grid">
-                <div class="metric-cell header">Marketing Spend</div>
-                <div class="metric-cell header">IB Leads</div>
-                <div class="metric-cell header">Total Deposits</div>
-                <div class="metric-cell header">Turkey Share</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">$6,966</div>
-                    <div class="metric-target">June 2026</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">90</div>
-                    <div class="metric-target">$77 CPL</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$197K</div>
-                    <div class="metric-target">28x spend</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">83%</div>
-                    <div class="metric-target">$164K from Turkey</div>
-                </div>
-                
-                <div class="metric-cell header">CPM</div>
-                <div class="metric-cell header">CPC</div>
-                <div class="metric-cell header">CTR</div>
-                <div class="metric-cell header">QA Score</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">$220</div>
-                    <div class="metric-target">Per 1K impressions</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$32.25</div>
-                    <div class="metric-target">Per click</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">0.68%</div>
-                    <div class="metric-target">Click rate</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">82/100</div>
-                    <div class="metric-target">Good</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- IB - MW APP (MB+) TAB -->
-        <div id="ib-mw-app" class="tab-content">
-            <h2 class="section-title">IB - MW APP (MB+) - Introducing Broker Mobile Campaign</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 95/100 (Excellent) | <strong>Critical Issues:</strong> 0 | 
-                <strong>Data Reliability:</strong> High | <strong>Campaign Status:</strong> Early stage / Limited activity
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Clean Data Quality</strong></td>
-                        <td>No critical data quality issues detected. All calculations validated correctly. Data structure is complete and consistent.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td style="text-align: center; font-size: 20px;">⚠️</td>
-                        <td><strong style="color: #78350f;">Very Limited Activity</strong></td>
-                        <td>Only 7 leads generated, 2 countries with deposits (Jordan, India). 92% of countries show $0 activity. This appears to be early-stage campaign or pilot phase.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td style="text-align: center; font-size: 20px;">ℹ️</td>
-                        <td><strong style="color: #1e3a8a;">Jordan Focus</strong></td>
-                        <td>Jordan represents 98% of deposits ($6,198 of $6,299 total). Concentrated activity suggests targeted IB partnership or specific market test.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Total IB Leads</strong></td>
-                        <td class="number">7</td>
-                        <td>Introducing Broker inquiries</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Signed to Funded IB</strong></td>
-                        <td class="number">6</td>
-                        <td>IB partners signed</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Funded IB</strong></td>
-                        <td class="number">3</td>
-                        <td>Active funded IB partners</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Funded IB Clients</strong></td>
-                        <td class="number">1</td>
-                        <td>End customers through IB network</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits</strong></td>
-                        <td class="number">$6,299</td>
-                        <td>Combined IB + IB Client deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Marketing Spend</strong></td>
-                        <td class="number">$0</td>
-                        <td>No spend data in current export</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lead to Funded IB %</strong></td>
-                        <td class="number">42.9%</td>
-                        <td>(Funded IB / Leads) × 100</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Active Countries -->
-            <h3 class="section-title">Active Countries (Deposits > $0)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Country</th>
-                        <th class="number">Leads</th>
-                        <th class="number">Funded IB</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>🇯🇴 Jordan</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">2</td>
-                        <td class="number">$6,198</td>
-                        <td class="number">98.4%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td class="number">3</td>
-                        <td class="number">1</td>
-                        <td class="number">$101</td>
-                        <td class="number">1.6%</td>
-                    </tr>
-                    <tr style="background: #f9fafb;">
-                        <td><strong>Other Countries (34)</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">0</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">7</td>
-                        <td class="number">3</td>
-                        <td class="number">$6,299</td>
-                        <td class="number">100.0%</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Campaign Status -->
-            <h3 class="section-title">Campaign Status Assessment</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Indicator</th>
-                        <th>Status</th>
-                        <th>Analysis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Scale</strong></td>
-                        <td class="number">Very Small</td>
-                        <td>7 total leads, 2 active countries. Early-stage or pilot campaign.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Geographic Coverage</strong></td>
-                        <td class="number">Limited</td>
-                        <td>Only Jordan and India generating deposits. 34 other countries tracked but inactive.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>IB Conversion</strong></td>
-                        <td class="number">42.9%</td>
-                        <td>3 of 7 leads became funded IB partners - reasonable conversion for IB model.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Quality</strong></td>
-                        <td class="number">95/100</td>
-                        <td>Excellent data quality despite limited activity. High data sparsity is expected for early-stage campaign.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="note">
-                <strong>Campaign Context:</strong> This appears to be a pilot or early-stage IB recruitment campaign 
-                for the mobile app platform. Limited activity across most countries suggests either: (1) Campaign recently launched, 
-                (2) Highly targeted approach focusing on specific markets (Jordan), or (3) Campaign being wound down. 
-                Recommend reviewing campaign objectives and timeline with marketing team.
-            </div>
-        </div>
-        
-        <!-- IB OVERVIEW TAB -->
-        <div id="ib-overview" class="tab-content">
-            <h2 class="section-title">IB Overview - Complete Introducing Broker Program</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 95/100 (Excellent) | <strong>Critical Issues:</strong> 0 | 
-                <strong>Data Reliability:</strong> High | <strong>Program Overview:</strong> 97 Total IBs, 39 Signed, 17 Funded IB Clients
-            </div>
-            
-            <!-- QA Findings Section -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Complete IB Program Data</strong></td>
-                        <td>Comprehensive view of entire IB program with 97 total IBs tracked through complete journey from initial contact to funded clients. Data quality excellent (95/100).</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td style="text-align: center; font-size: 20px;">ℹ️</td>
-                        <td><strong style="color: #1e3a8a;">ROI at 2,497%</strong></td>
-                        <td>IB Overview shows ROI of 2,497% for IB Clients, indicating strong profitability from IB-sourced customer deposits. This leverage effect demonstrates value of IB partnership model.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td style="text-align: center; font-size: 20px;">⚠️</td>
-                        <td><strong style="color: #78350f;">Conversion Drop-Off</strong></td>
-                        <td>Significant drop from 97 total IBs → 39 signed (40%) → 11 with clients (28%) → 3 with funded clients (27%). Opportunity to improve IB activation and client acquisition rates.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- IB Journey Flow -->
-            <h3 class="section-title">Complete IB Journey Flow</h3>
-            <div class="note">
-                <strong>Understanding the IB Model:</strong> This flow shows how Introducing Brokers progress from initial 
-                contact through signing agreements to bringing funded clients. Each stage represents a conversion opportunity.
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stage</th>
-                        <th class="number">Volume</th>
-                        <th class="number">Conversion %</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>1. Total IBs</strong></td>
-                        <td class="number">97</td>
-                        <td class="number">-</td>
-                        <td>All Introducing Brokers in system</td>
-                    </tr>
-                    <tr>
-                        <td><strong>2. IBs w/o Any Action</strong></td>
-                        <td class="number">56</td>
-                        <td class="number">57.73%</td>
-                        <td>IBs that haven't progressed (drop-off)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3. Uploaded Docs</strong></td>
-                        <td class="number">41</td>
-                        <td class="number">42.27%</td>
-                        <td>IBs who submitted documentation</td>
-                    </tr>
-                    <tr>
-                        <td><strong>4. Total Signed IB</strong></td>
-                        <td class="number">39</td>
-                        <td class="number">95.12%</td>
-                        <td>IBs with signed agreements (of those who uploaded docs)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>5. IBs w/o Clients</strong></td>
-                        <td class="number">28</td>
-                        <td class="number">71.79%</td>
-                        <td>Signed IBs without any clients yet</td>
-                    </tr>
-                    <tr>
-                        <td><strong>6. Has IB Clients</strong></td>
-                        <td class="number">11</td>
-                        <td class="number">28.21%</td>
-                        <td>IBs who brought clients (of signed IBs)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>7. Total IB Clients</strong></td>
-                        <td class="number">55</td>
-                        <td class="number">-</td>
-                        <td>All customers brought by IBs</td>
-                    </tr>
-                    <tr>
-                        <td><strong>8. IBs w/o Funded Clients</strong></td>
-                        <td class="number">8</td>
-                        <td class="number">72.73%</td>
-                        <td>IBs with clients but none funded yet</td>
-                    </tr>
-                    <tr>
-                        <td><strong>9. Has Funded IB Clients</strong></td>
-                        <td class="number">3</td>
-                        <td class="number">27.27%</td>
-                        <td>IBs with funded clients (successful IBs)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>10. Total Funded IB Clients</strong></td>
-                        <td class="number">17</td>
-                        <td class="number">30.91%</td>
-                        <td>Funded customers from IB network (of 55 total clients)</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Financial Summary -->
-            <h3 class="section-title">Financial Performance Summary</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Marketing Spend</strong></td>
-                        <td class="number">$6,966</td>
-                        <td>Total IB recruitment marketing cost</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total IB Leads</strong></td>
-                        <td class="number">97</td>
-                        <td>Introducing Broker inquiries</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPL (Cost per IB Lead)</strong></td>
-                        <td class="number">$71.82</td>
-                        <td>Spent / IB Leads</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deposits from IBs</strong></td>
-                        <td class="number">$29,419</td>
-                        <td>IB partner deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deposits from IB Clients</strong></td>
-                        <td class="number">$173,960</td>
-                        <td>End customer deposits through IB network</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits</strong></td>
-                        <td class="number">$203,379</td>
-                        <td>Combined IB + Client deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ROI (IB Clients)</strong></td>
-                        <td class="number">2,497%</td>
-                        <td>From Power BI report (exceptional leverage)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deposit Leverage Ratio</strong></td>
-                        <td class="number">29.2x</td>
-                        <td>Total Deposits / Marketing Spend</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Conversion Rates -->
-            <h3 class="section-title">IB Program Conversion Rates</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Conversion Step</th>
-                        <th class="number">Rate</th>
-                        <th>Analysis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>IB → Uploaded Docs</strong></td>
-                        <td class="number">42.3%</td>
-                        <td>41 of 97 IBs submitted documents (room for improvement)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Uploaded → Signed</strong></td>
-                        <td class="number">95.1%</td>
-                        <td>39 of 41 completed signing (excellent conversion)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Signed → Has Clients</strong></td>
-                        <td class="number">28.2%</td>
-                        <td>11 of 39 brought clients (needs improvement)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>IBs w/ Clients → Funded Clients</strong></td>
-                        <td class="number">27.3%</td>
-                        <td>3 of 11 have funded clients (low activation)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>IB Clients → Funded</strong></td>
-                        <td class="number">30.9%</td>
-                        <td>17 of 55 clients funded (reasonable for IB model)</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Top Active Countries -->
-            <h3 class="section-title">Active Countries (Deposits > $0)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Country</th>
-                        <th class="number">IB Leads</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>🇯🇴 Jordan</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">$6,198</td>
-                        <td class="number">98.4%</td>
-                    </tr>
-                    <tr>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td class="number">3</td>
-                        <td class="number">$101</td>
-                        <td class="number">1.6%</td>
-                    </tr>
-                    <tr style="background: #f9fafb;">
-                        <td><strong>Other Countries (35)</strong></td>
-                        <td class="number">2</td>
-                        <td class="number">$0</td>
-                        <td class="number">0.0%</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">7</td>
-                        <td class="number">$6,299</td>
-                        <td class="number">100.0%</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="note">
-                <strong>Data Note:</strong> The IB Overview export shows limited activity (7 leads, 2 active countries) 
-                while the Power BI visualization shows 97 total IBs and comprehensive journey data. This suggests the export 
-                may be filtered or the visualization aggregates data from a broader time period. Recommend verifying export 
-                filter settings to capture complete IB program data.
-            </div>
-        </div>
-        
-        <!-- OVERALL MW TAB -->
-        <div id="overall-mw" class="tab-content">
-            <h2 class="section-title">Overall MW - Combined MW Campaigns</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 92/100 (Excellent) | <strong>Critical Issues:</strong> 0 | 
-                <strong>Data Reliability:</strong> High | <strong>Warnings:</strong> 7 minor funnel issues, 3 missing values
-            </div>
-            
-            <!-- QA Findings -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Clean Overall Data Quality</strong></td>
-                        <td>92/100 QA score with no critical issues. Overall MW combines Legacy + APP campaigns showing aggregated performance across MW product line. Minor funnel inconsistencies (7) much lower than individual campaigns.</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Strong Performance Metrics</strong></td>
-                        <td>$2.07M deposits from $79.9K spend shows 25.9x deposit leverage. 342 funded accounts with $6,046 average deposit indicates high customer value. UAE driving 76% of deposits ($1.58M).</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td style="text-align: center; font-size: 20px;">⚠️</td>
-                        <td><strong style="color: #78350f;">Minor Data Gaps</strong></td>
-                        <td>3 missing values in non-critical fields and 7 minor funnel inconsistencies detected. These don't impact overall portfolio metrics but should be reviewed in source data.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Marketing Spend</strong></td>
-                        <td class="number">$79,933</td>
-                        <td>Combined MW campaigns investment</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CTR (Click-Through Rate)</strong></td>
-                        <td class="number">1.11%</td>
-                        <td>Clicks / Impressions × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPC (Cost per Click)</strong></td>
-                        <td class="number">$3.13</td>
-                        <td>Spent / Clicks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPM (Cost per 1,000 Impressions)</strong></td>
-                        <td class="number">$34.80</td>
-                        <td>(Spent / Impressions) × 1,000</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPL (Cost per Lead)</strong></td>
-                        <td class="number">$42.59</td>
-                        <td>Spent / Leads</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPFA (Cost per Funded Account)</strong></td>
-                        <td class="number">$233.72</td>
-                        <td>Spent / Funded Accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Leads</strong></td>
-                        <td class="number">1,877</td>
-                        <td>Combined MW campaigns</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Funded Accounts</strong></td>
-                        <td class="number">342</td>
-                        <td>Customers who made deposits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Deposits</strong></td>
-                        <td class="number">$2,067,893</td>
-                        <td>Customer capital deposited</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Net Money In (NMI)</strong></td>
-                        <td class="number">$813,374</td>
-                        <td>Deposits minus Withdrawals</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Average Deposit Size</strong></td>
-                        <td class="number">$6,046</td>
-                        <td>Deposits / Funded Accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ROI (on NMI)</strong></td>
-                        <td class="number">2,590%</td>
-                        <td>(NMI / Spent) × 100</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Top Countries -->
-            <h3 class="section-title">Top 5 Countries by Deposits</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Country</th>
-                        <th class="number">Funded Accounts</th>
-                        <th class="number">Total Deposits</th>
-                        <th class="number">% of Total</th>
-                        <th class="number">Avg Deposit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><strong>🇦🇪 UAE</strong></td>
-                        <td class="number">105</td>
-                        <td class="number">$1,576,106</td>
-                        <td class="number">76.2%</td>
-                        <td class="number">$15,010</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>🇨🇦 Canada</strong></td>
-                        <td class="number">105</td>
-                        <td class="number">$162,016</td>
-                        <td class="number">7.8%</td>
-                        <td class="number">$1,543</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td><strong>🇪🇸 Spain</strong></td>
-                        <td class="number">28</td>
-                        <td class="number">$112,896</td>
-                        <td class="number">5.5%</td>
-                        <td class="number">$4,032</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td><strong>🇦🇺 Australia</strong></td>
-                        <td class="number">50</td>
-                        <td class="number">$71,727</td>
-                        <td class="number">3.5%</td>
-                        <td class="number">$1,435</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td><strong>🇮🇳 India</strong></td>
-                        <td class="number">55</td>
-                        <td class="number">$63,341</td>
-                        <td class="number">3.1%</td>
-                        <td class="number">$1,152</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td></td>
-                        <td><strong>TOTAL</strong></td>
-                        <td class="number">342</td>
-                        <td class="number">$2,067,893</td>
-                        <td class="number">100.0%</td>
-                        <td class="number">$6,046</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Summary Metrics Grid -->
-            <h3 class="section-title">Overall MW Summary</h3>
-            <div class="metric-grid">
-                <div class="metric-cell header">Marketing Spend</div>
-                <div class="metric-cell header">Total Deposits</div>
-                <div class="metric-cell header">Funded Accounts</div>
-                <div class="metric-cell header">ROI</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">$79.9K</div>
-                    <div class="metric-target">MW campaigns</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$2.07M</div>
-                    <div class="metric-target">Customer capital</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">342</div>
-                    <div class="metric-target">Active customers</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">2,590%</div>
-                    <div class="metric-target">Exceptional return</div>
-                </div>
-                
-                <div class="metric-cell header">CTR</div>
-                <div class="metric-cell header">CPC</div>
-                <div class="metric-cell header">CPFA</div>
-                <div class="metric-cell header">Avg Deposit</div>
-                
-                <div class="metric-cell">
-                    <div class="metric-value">1.11%</div>
-                    <div class="metric-target">Click rate</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$3.13</div>
-                    <div class="metric-target">Per click</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$234</div>
-                    <div class="metric-target">Per funded</div>
-                </div>
-                <div class="metric-cell">
-                    <div class="metric-value">$6,046</div>
-                    <div class="metric-target">Per customer</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- DEMO COMPETITION 2026 TAB -->
-        <div id="demo-comp" class="tab-content">
-            <h2 class="section-title">Demo Competition 2026 - Lead Generation Campaign</h2>
-            
-            <div class="info-box">
-                <strong>QA Status:</strong> 100/100 (Perfect) ⭐ | <strong>Critical Issues:</strong> 0 | 
-                <strong>Campaign Type:</strong> Demo Account Acquisition | <strong>Focus:</strong> Lead generation, not deposits
-            </div>
-            
-            <!-- QA Findings -->
-            <h3 class="section-title">Quality Assurance Findings</h3>
-            
-            <table style="margin-bottom: 30px;">
-                <thead>
-                    <tr>
-                        <th style="width: 40px;"></th>
-                        <th>Finding</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">⭐</td>
-                        <td><strong style="color: #065f46;">Complete Funnel Tracking - Perfect Score</strong></td>
-                        <td>All funnel stages tracked: Impressions → Clicks → Sessions → Real Visitors → Demo Accounts → Live Accounts. Has LPV % and Bounce Rate data. 100/100 QA score.</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td style="text-align: center; font-size: 20px;">✅</td>
-                        <td><strong style="color: #065f46;">Excellent Cost Efficiency</strong></td>
-                        <td>CPC of $0.25 and CPM of $2.68 are best across all campaigns. Cost per Demo Account at $15.76 shows highly efficient lead generation.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td style="text-align: center; font-size: 20px;">ℹ️</td>
-                        <td><strong style="color: #1e3a8a;">Different Campaign Model</strong></td>
-                        <td>This is a lead generation / demo account campaign, not focused on deposits or funded accounts. Success metrics are Demo Accounts created and Live Account conversions, not CPFA or ROI.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Key Performance Metrics -->
-            <h3 class="section-title">Key Performance Metrics</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th class="number">Value</th>
-                        <th>Definition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Marketing Spend</strong></td>
-                        <td class="number">$46,226</td>
-                        <td>Total campaign investment</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CTR (Click-Through Rate)</strong></td>
-                        <td class="number">1.07%</td>
-                        <td>Clicks / Impressions × 100 (Best across all campaigns)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPC (Cost per Click)</strong></td>
-                        <td class="number">$0.25</td>
-                        <td>Spent / Clicks (Most efficient CPC)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>CPM (Cost per 1,000 Impressions)</strong></td>
-                        <td class="number">$2.68</td>
-                        <td>(Spent / Impressions) × 1,000 (Lowest CPM)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>LPV % (Landing Page Views)</strong></td>
-                        <td class="number">44.7%</td>
-                        <td>Sessions / Clicks × 100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Bounce Rate</strong></td>
-                        <td class="number">46.2%</td>
-                        <td>Visitors who left immediately</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Real Visitors</strong></td>
-                        <td class="number">44,394</td>
-                        <td>Engaged visitors (Sessions × [1 - Bounce])</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Demo Accounts Created</strong></td>
-                        <td class="number">2,933</td>
-                        <td>Users who opened demo accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cost per Demo Account</strong></td>
-                        <td class="number">$15.76</td>
-                        <td>Spent / Demo Accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Live Accounts (Converted)</strong></td>
-                        <td class="number">421</td>
-                        <td>Demo users who opened live accounts</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Demo → Live Conversion</strong></td>
-                        <td class="number">14.4%</td>
-                        <td>Live Accounts / Demo Accounts × 100</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Complete Funnel -->
-            <h3 class="section-title">Demo Competition Funnel</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stage</th>
-                        <th class="number">Volume</th>
-                        <th class="number">Conversion %</th>
-                        <th class="number">Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>1. Impressions</strong></td>
-                        <td class="number">17,234,180</td>
-                        <td class="number">-</td>
-                        <td class="number">$2.68 CPM</td>
-                    </tr>
-                    <tr>
-                        <td><strong>2. Clicks</strong></td>
-                        <td class="number">184,569</td>
-                        <td class="number">1.07% CTR</td>
-                        <td class="number">$0.25 CPC</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3. Sessions/LPV</strong></td>
-                        <td class="number">82,505</td>
-                        <td class="number">44.7% LPV</td>
-                        <td class="number">-</td>
-                    </tr>
-                    <tr>
-                        <td><strong>4. Real Visitors</strong></td>
-                        <td class="number">44,394</td>
-                        <td class="number">53.8% stayed</td>
-                        <td class="number">-</td>
-                    </tr>
-                    <tr>
-                        <td><strong>5. Demo Accounts</strong></td>
-                        <td class="number">2,933</td>
-                        <td class="number">6.6% of visitors</td>
-                        <td class="number">$15.76 per demo</td>
-                    </tr>
-                    <tr>
-                        <td><strong>6. Live Accounts</strong></td>
-                        <td class="number">421</td>
-                        <td class="number">14.4% converted</td>
-                        <td class="number">$109.80 per live</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Performance Assessment -->
-            <h3 class="section-title">Campaign Performance Assessment</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Performance</th>
-                        <th>Analysis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background: #d1fae5;">
-                        <td><strong>Ad Efficiency</strong></td>
-                        <td>Excellent</td>
-                        <td>CTR 1.07% and CPC $0.25 are best in portfolio. Highly optimized ad targeting and creative.</td>
-                    </tr>
-                    <tr style="background: #d1fae5;">
-                        <td><strong>Demo Acquisition Cost</strong></td>
-                        <td>$15.76 per demo</td>
-                        <td>Very efficient demo account generation. Good value for lead generation campaign.</td>
-                    </tr>
-                    <tr style="background: #fef3c7;">
-                        <td><strong>Demo → Live Conversion</strong></td>
-                        <td>14.4%</td>
-                        <td>421 of 2,933 demo users converted to live accounts. Opportunity to improve with nurture campaigns or better demo experience.</td>
-                    </tr>
-                    <tr style="background: #dbeafe;">
-                        <td><strong>Campaign Purpose</strong></td>
-                        <td>Lead Generation</td>
-                        <td>Different from other campaigns - focused on acquiring demo users for future conversion, not immediate deposits. Builds top-of-funnel pipeline.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="note">
-                <strong>Campaign Context:</strong> Demo Competition 2026 is a lead generation campaign designed to attract 
-                users through demo account offerings. Success is measured by demo account creation and live account conversion, 
-                not by immediate deposits. This campaign feeds the top of funnel for future conversion campaigns.
-            </div>
-        </div>
-            
-        </div>
-    </div>
-    
-    <!-- Footer -->
-    <div class="footer">
-        <strong>MultiBank Group</strong>
-    </div>
-    
-    <script>
+<!-- Footer -->
+<div class="footer">
+<strong>MultiBank Group</strong>
+</div>
+<script>
         function switchTab(tabName) {
             // Hide all tab contents
             const contents = document.querySelectorAll('.tab-content');
